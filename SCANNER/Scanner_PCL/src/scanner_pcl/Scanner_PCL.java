@@ -3,15 +3,17 @@ package scanner_pcl;
 
 /**
  *
- * @author jonaranjo
+ * @author José Mario Naranjo Leiva
  */
 public class Scanner_PCL {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+   
+
+    public static void main(String[] args) 
+    {
+ 
+  
+
     }
     
 }
