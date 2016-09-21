@@ -1,0 +1,9 @@
+terminal IF;
+terminal THEN;
+terminal AND;
+terminal ID;
+terminal SUMA;
+terminal ENTERO;
+
+non terminal dummy;
+dummy::=;
