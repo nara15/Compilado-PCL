@@ -7,8 +7,6 @@ package scanner_pcl;
  */
 public class Scanner_PCL {
 
-   
-
     public static void main(String[] args) 
     {
  
