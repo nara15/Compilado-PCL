@@ -23,6 +23,15 @@ ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]*
 SUMA = "+"
 ENTERO = 0|[1-9][0-9]*
 
+
+/**
+ * Expresiones regulares para comentarios
+ */
+leftbrace = \([*]
+rightbrace = [*]\)
+commentbody = [^]*
+COMENTARIO = {leftbrace}{commentbody}{rightbrace}
+
 %%
 
 if          { return token(sym.IF,yytext()); }
@@ -32,4 +41,5 @@ and         { return token(sym.AND, yytext()); }
 {ID}        { return token(sym.ID, yytext()); } 
 {SUMA}      { return token(sym.SUMA, yytext()); } 
 {ENTERO}    { return token(sym.ENTERO, yytext()); }
+{COMENTARIO} {return token(sym.COMMENT, yytext());}
 .           { throw new RuntimeException("Caracter inválido " + yytext()); }  

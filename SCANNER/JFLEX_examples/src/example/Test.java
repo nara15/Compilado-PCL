@@ -32,7 +32,7 @@ public class Test
             
             for (sym = lexer.next_token(); sym.sym != 0; sym = lexer.next_token())
             {
-                System.out.println(sym.value);
+                System.out.println(sym.value + " " + (sym.left + 1));
             }
             
         } catch (FileNotFoundException ex)
