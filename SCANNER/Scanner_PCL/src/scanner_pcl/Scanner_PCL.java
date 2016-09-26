@@ -23,7 +23,7 @@ public class Scanner_PCL {
         String file = rootPath + "/src/scanner_pcl/test.txt";
         
         Symbol sym;
-       
+        
         try 
         {
             
