@@ -48,9 +48,15 @@ terminal WHILE;
 terminal WITH;
 terminal WRITE;
 terminal XOR;
+
+terminal ENTERO;
+terminal FLOTANTE;
+terminal NOTA_CIENTIFICA;
+terminal STRING_C;
+terminal CHARACTER;
+
 terminal ID;
 terminal SUMA;
-terminal ENTERO;
 terminal COMMENT;
 
 non terminal dummy;

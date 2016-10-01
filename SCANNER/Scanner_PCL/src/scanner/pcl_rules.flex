@@ -19,6 +19,9 @@ private Symbol token(int type, Object value)
 %column
 
 /**
+*   COMENTARIOS DEL LENGUAJE ---------------------------------------------------
+*/
+/**
 *   Expresiones regulares para comentarios de linea
 */
 start = [//]{2}
@@ -38,23 +41,26 @@ COMMENT_BODY = {leftbrace}{commentbody}{rightbrace}
 */
 COMMEN_BODY_BRACKETS = \{[^]*\}
 
-
-
+/**
+*   LITERALES ------------------------------------------------------------------
+*/
 DIGIT = [0-9]
 ENTERO = {DIGIT}+
-BLANCO = [\n| |\t|\r]
-ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]{1,9}
+FLOTANTE = -?\d+\.\d+
+NOTA_CIENTIFICA = (-?\d+\.?\d+)(E)-?[0-9]+
+STRINGCHARACTER = \"[^\"]*\"
+CHARACTER = #\d+
+
+
+/*
+*   IDENTIFICADORES ------------------------------------------------------------
+*/
+ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]{1,127}
 SUMA = "+"
 
-%%
+BLANCO = [\n| |\t|\r]
 
-{BLANCO}                { /*Omitir el espacio blanco*/ }
-{ID}                    {return token(sym.ID, yytext());}
-{SUMA}                  { return token(sym.SUMA, yytext()); } 
-{ENTERO}                { return token(sym.ENTERO, yytext()); }
-{COMMENT_BODY}          {return token(sym.COMMENT, yytext());}
-{COMMENT_LINE}          {return token(sym.COMMENT, yytext());}
-{COMMEN_BODY_BRACKETS}  {return token(sym.COMMENT, yytext());}
+%%
 
 <YYINITIAL> 
 {
@@ -110,8 +116,23 @@ SUMA = "+"
     "with"       { return token(sym.WITH, yytext());}
     "write"      { return token(sym.WRITE, yytext());}
     "xor"        { return token(sym.XOR, yytext());}
-
+    
+    /**
+    * OPERADORES
+    */
 }
-  
-                  
-.                       { System.out.println("Caracter inválido " + yytext()); }  
+
+{BLANCO}                { /*Omitir el espacio blanco*/ }
+{SUMA}                  { return token(sym.SUMA, yytext()); } 
+{ENTERO}                { return token(sym.ENTERO, yytext()); }
+{FLOTANTE}              { return token(sym.FLOTANTE, yytext());}
+{NOTA_CIENTIFICA}       { return token(sym.NOTA_CIENTIFICA, yytext());}
+{STRINGCHARACTER}       { return token(sym.STRING_C, yytext());}
+{CHARACTER}             { return token(sym.CHARACTER, yytext());}
+{ID}                    { return token(sym.ID, yytext());}
+
+{COMMENT_BODY}          { return token(sym.COMMENT, yytext());}
+{COMMENT_LINE}          { return token(sym.COMMENT, yytext());}
+{COMMEN_BODY_BRACKETS}  { return token(sym.COMMENT, yytext());}
+                 
+.                { System.out.println("Caracter inválido " + yytext()); }  

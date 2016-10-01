@@ -26,16 +26,17 @@ public class Scanner_PCL {
         
         try 
         {
-            
+          
             Scanner lexer = new Scanner(new FileReader(file));
             
             for (sym = lexer.next_token(); sym.sym != 0; sym = lexer.next_token())
             {
-                System.out.println(sym.value + " " + (sym.left + 1));
+                System.out.println(sym.value + " línea:" + (sym.left + 1) + " | Tipo: " + (sym.sym));
             }
             
         } catch (FileNotFoundException ex)
         {
+            
             Logger.getLogger(Scanner_PCL.class.getName()).log(Level.SEVERE, null, ex);
             
         } catch (IOException ex) 
