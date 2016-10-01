@@ -21,7 +21,7 @@ public class Scanner_PCL {
         String rootPath = Paths.get("").toAbsolutePath().toString();
         
         String file = rootPath + "/src/scanner_pcl/test.txt";
-        
+       
         Symbol sym;
         
         try 
@@ -31,7 +31,8 @@ public class Scanner_PCL {
             
             for (sym = lexer.next_token(); sym.sym != 0; sym = lexer.next_token())
             {
-                System.out.println(sym.value + " línea:" + (sym.left + 1) + " | Tipo: " + (sym.sym));
+                System.out.println(sym.value + " línea:" + (sym.left + 1) + " | Tipo: " + (sym.sym)); 
+                System.out.println(sym.right);
             }
             
         } catch (FileNotFoundException ex)
