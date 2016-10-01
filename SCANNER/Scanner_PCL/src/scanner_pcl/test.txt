@@ -4,7 +4,7 @@ VaLoR
 
 
 xor                                  xor and
-
+anD
 if repeat 
 
 procedure

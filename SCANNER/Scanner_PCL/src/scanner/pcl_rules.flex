@@ -56,7 +56,7 @@ CHARACTER = #\d+
 *   IDENTIFICADORES ------------------------------------------------------------
 */
 ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]{1,127}
-SUMA = "+"
+
 
 BLANCO = [\n| |\t|\r]
 
@@ -67,63 +67,94 @@ BLANCO = [\n| |\t|\r]
     /*
     * PALABRAS RESERVADAS
     */
-    "and"        { return token(sym.IF,yytext()); }
-    "array"      { return token(sym.ARRAY, yytext()); }
-    "begin"      { return token(sym.BEGIN, yytext()); }
-    "boolean"    { return token(sym.BOOLEAN, yytext()); }
-    "byte"       { return token(sym.BYTE, yytext());}
-    "case"       { return token(sym.CASE, yytext());}
-    "char"       { return token(sym.CHAR, yytext());}
-    "const"      { return token(sym.CONST, yytext());}
-    "div"        { return token(sym.DIV, yytext());}
-    "do"         { return token(sym.DO, yytext());}
-    "downto"     { return token(sym.DOWNTO, yytext());}
-    "else"       { return token(sym.ELSE, yytext());}
-    "end"        { return token(sym.END, yytext());}
-    "false"      { return token(sym.FALSE, yytext());}
-    "for"        { return token(sym.FOR, yytext());}
-    "forward"    { return token(sym.FORWARD, yytext());}
-    "function"   { return token(sym.FUNCTION, yytext());}
-    "goto"       { return token(sym.GOTO, yytext());}
-    "if"         { return token(sym.IF, yytext());}
-    "in"         { return token(sym.IN, yytext());}
-    "inline"     { return token(sym.INLINE, yytext());}
-    "int"        { return token(sym.INT, yytext());}
-    "label"      { return token(sym.LABEL, yytext());}
-    "longint"    { return token(sym.LONGINT, yytext());}
-    "mod"        { return token(sym.MOD, yytext());}
-    "nil"        { return token(sym.NIL, yytext());}
-    "not"        { return token(sym.NOT, yytext());}
-    "of"         { return token(sym.OF, yytext());}
-    "or"         { return token(sym.OR, yytext());}
-    "packed"     { return token(sym.PACKED, yytext());}
-    "procedure"  { return token(sym.PROCEDURE, yytext());}
-    "program"    { return token(sym.PROGRAM, yytext());}
-    "read"       { return token(sym.READ, yytext());}
-    "real"       { return token(sym.REAL, yytext());}
-    "record"     { return token(sym.RECORD, yytext());}
-    "repeat"     { return token(sym.REPEAT, yytext());}
-    "set"        { return token(sym.SET, yytext());}
-    "shortint"   { return token(sym.SHORTINT, yytext());}
-    "string"     { return token(sym.STRING, yytext());}
-    "then"       { return token(sym.THEN, yytext());}
-    "to"         { return token(sym.TO, yytext());}
-    "true"       { return token(sym.TRUE, yytext());}
-    "type"       { return token(sym.TYPE, yytext());}
-    "until"      { return token(sym.UNTIL, yytext());}
-    "var"        { return token(sym.VAR, yytext());}
-    "while"      { return token(sym.WHILE, yytext());}
-    "with"       { return token(sym.WITH, yytext());}
-    "write"      { return token(sym.WRITE, yytext());}
-    "xor"        { return token(sym.XOR, yytext());}
+    "and"        { return token(sym.PALABRA_RESERVADA, yytext()); }
+    "array"      { return token(sym.PALABRA_RESERVADA, yytext()); }
+    "begin"      { return token(sym.PALABRA_RESERVADA, yytext()); }
+    "boolean"    { return token(sym.PALABRA_RESERVADA, yytext()); }
+    "byte"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "case"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "char"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "const"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "div"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "do"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "downto"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "else"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "end"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "false"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "for"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "forward"    { return token(sym.PALABRA_RESERVADA, yytext());}
+    "function"   { return token(sym.PALABRA_RESERVADA, yytext());}
+    "goto"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "if"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "in"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "inline"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "int"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "label"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "longint"    { return token(sym.PALABRA_RESERVADA, yytext());}
+    "mod"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "nil"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "not"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "of"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "or"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "packed"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "procedure"  { return token(sym.PALABRA_RESERVADA, yytext());}
+    "program"    { return token(sym.PALABRA_RESERVADA, yytext());}
+    "read"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "real"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "record"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "repeat"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "set"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "shortint"   { return token(sym.PALABRA_RESERVADA, yytext());}
+    "string"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "then"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "to"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "true"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "type"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "until"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "var"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "while"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "with"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "write"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "xor"        { return token(sym.PALABRA_RESERVADA, yytext());}
     
     /**
-    * OPERADORES
+    * OPERADORES Y SEPARADORES
     */
+    
+    ","          { return token(sym.COMA, yytext());}
+    ";"          { return token(sym.PUNTO_COMA, yytext());}
+    "++"         { return token(sym.OP_INC, yytext());}
+    "--"         { return token(sym.OP_DEC, yytext());}
+    ">="         { return token(sym.OP_MAYOR_IGUAL, yytext());}
+    ">"          { return token(sym.OP_MAYOR, yytext());}
+    "<="         { return token(sym.OP_MENOR_IGUAL, yytext());}
+    "<"          { return token(sym.OP_MENOR, yytext());}
+    "<>"         { return token(sym.OP_DISTINTO, yytext());}
+    "="          { return token(sym.OP_IGUAL, yytext());}
+    "+"          { return token(sym.OP_SUMA, yytext());}
+    "-"          { return token(sym.OP_RESTA, yytext());}
+    "*"          { return token(sym.OP_MULTIPLICACION, yytext());}
+    "/"          { return token(sym.OP_DIVISION, yytext());}
+    "("          { return token(sym.PAR_APER, yytext());}
+    ")"          { return token(sym.PAR_CERR, yytext());}
+    "["          { return token(sym.BRA_APER, yytext());}
+    "]"          { return token(sym.BRA_CERR, yytext());}
+    ":="         { return token(sym.ASIGN, yytext());}
+    "."          { return token(sym.PUNTO, yytext());}
+    ":"          { return token(sym.DOS_PUNTO, yytext());}
+    "+="         { return token(sym.OP_SUMA_ASIGN, yytext());}
+    "-="         { return token(sym.OP_RESTA_ASIGN, yytext());}
+    "*="         { return token(sym.OP_MUL_ASIGN, yytext());}
+    "/="         { return token(sym.OP_DIV_ASIGN, yytext());}
+    ">>"         { return token(sym.OP_SHIFT_DER, yytext());}
+    "<<"         { return token(sym.OP_SHIFT_IZQ, yytext());}
+    "<<="        { return token(sym.OP_SHIFT_IZQ_ASIGN, yytext());}
+    ">>="        { return token(sym.OP_SHIFT_DER_ASIGN, yytext());}
+    
 }
 
 {BLANCO}                { /*Omitir el espacio blanco*/ }
-{SUMA}                  { return token(sym.SUMA, yytext()); } 
+
 {ENTERO}                { return token(sym.ENTERO, yytext()); }
 {FLOTANTE}              { return token(sym.FLOTANTE, yytext());}
 {NOTA_CIENTIFICA}       { return token(sym.NOTA_CIENTIFICA, yytext());}
