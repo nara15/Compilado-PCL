@@ -1,10 +1,13 @@
 
 package scanner_pcl;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
@@ -14,38 +17,83 @@ import scanner.Scanner;
  *
  * @author José Mario Naranjo Leiva
  */
-public class Scanner_PCL {
+public class Scanner_PCL 
+{
+    
+    private final ArrayList<Symbol> _tokens;
+    private final Map<Object, ArrayList<Integer>> _tokens_lines;
+    private Scanner _scanner;
 
-    public static void main(String[] args) 
+    public Scanner_PCL()
     {
-        String rootPath = Paths.get("").toAbsolutePath().toString();
+        _tokens = new ArrayList<>();
+        _tokens_lines = new HashMap<>(); 
+    }
+
+    public ArrayList<Symbol> getTokens()
+    {
+        return _tokens;
+    }
+
+    public Map<Object, ArrayList<Integer>> getTokens_lines()
+    {
+        return _tokens_lines;
+    }
+    
+    
+     
+    /**
+     * This methos process the source file and stores every token found to a list for preview use
+     * @param pPath: Path to PCL file to process
+     */
+    public void processFile(String pPath)
+    {
+  
+        Symbol symbol;
         
-        String file = rootPath + "/src/scanner_pcl/test.txt";
-       
-        Symbol sym;
+        BufferedReader br;
         
         try 
         {
-          
-            Scanner lexer = new Scanner(new FileReader(file));
+            br = new BufferedReader(new FileReader(pPath));
+            _scanner = new Scanner(br);
             
-            for (sym = lexer.next_token(); sym.sym != 0; sym = lexer.next_token())
+            for (symbol = _scanner.next_token(); symbol.sym != 0; symbol = _scanner.next_token())
             {
-                System.out.println(sym.value + " línea:" + (sym.left + 1) + " | Tipo: " + (sym.sym)); 
-                System.out.println(sym.right);
+                _tokens.add(symbol);
             }
             
-        } catch (FileNotFoundException ex)
+        } catch (FileNotFoundException ex) 
         {
             
             Logger.getLogger(Scanner_PCL.class.getName()).log(Level.SEVERE, null, ex);
             
         } catch (IOException ex) 
         {
+            
             Logger.getLogger(Scanner_PCL.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
-  
-
     }
     
+    public void countTokens()
+    {
+        _tokens.stream().forEach((Symbol token) -> {
+            
+            System.out.println(token.value + " línea:" + (token.left + 1) + " | Tipo: " + (token.sym));
+            
+            if (_tokens_lines.containsKey(token.sym))
+            {
+                _tokens_lines.get(token.sym).add(token.left + 1);
+            }
+            else
+            {
+                ArrayList<Integer> newLine = new ArrayList<>();
+                newLine.add(token.left + 1);
+                _tokens_lines.put(token.sym, newLine);
+            }
+        });
+        System.out.println(_tokens_lines.size());
+    }
+     
 }

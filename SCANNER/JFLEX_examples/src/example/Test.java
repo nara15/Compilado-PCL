@@ -28,11 +28,11 @@ public class Test
         try 
         {
             
-            Lexer lexer = new Lexer(new FileReader(file));
+            PascalLexer lexer = new PascalLexer(new FileReader(file));
             
             for (sym = lexer.next_token(); sym.sym != 0; sym = lexer.next_token())
             {
-                System.out.println(sym.value + " " + (sym.left + 1));
+                System.out.println(sym.value);
             }
             
         } catch (FileNotFoundException ex)

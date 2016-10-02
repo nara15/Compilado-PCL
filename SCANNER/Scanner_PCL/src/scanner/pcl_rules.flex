@@ -166,4 +166,4 @@ BLANCO = [\n| |\t|\r]
 {COMMENT_LINE}          { return token(sym.COMMENT, yytext());}
 {COMMEN_BODY_BRACKETS}  { return token(sym.COMMENT, yytext());}
                  
-.                { System.out.println("Caracter inválido " + yytext()); }  
+.                       { System.out.println("Caracter inválido " + yytext()); }  
