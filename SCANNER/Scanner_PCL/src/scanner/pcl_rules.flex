@@ -44,8 +44,7 @@ COMMEN_BODY_BRACKETS = \{[^]*\}
 /**
 *   LITERALES ------------------------------------------------------------------
 */
-DIGIT = [0-9]
-ENTERO = {DIGIT}+
+ENTERO = \d+
 FLOTANTE = -?\d+\.\d+
 NOTA_CIENTIFICA = (-?\d+\.?\d+)(E)-?[0-9]+
 STRINGCHARACTER = \"[^\"]*\"
@@ -160,10 +159,10 @@ BLANCO = [\n| |\t|\r]
 {NOTA_CIENTIFICA}       { return token(sym.NOTA_CIENTIFICA, yytext());}
 {STRINGCHARACTER}       { return token(sym.STRING_C, yytext());}
 {CHARACTER}             { return token(sym.CHARACTER, yytext());}
-{ID}                    { return token(sym.ID, yytext());}
+{ID}                    { return token(sym.ID, yytext().toLowerCase());}
 
 {COMMENT_BODY}          { return token(sym.COMMENT, yytext());}
 {COMMENT_LINE}          { return token(sym.COMMENT, yytext());}
 {COMMEN_BODY_BRACKETS}  { return token(sym.COMMENT, yytext());}
                  
-.                       { System.out.println("Caracter inválido " + yytext()); }  
+.                       { return token(sym.ERROR_LEXICO, "Caracter inválido " + yytext()); }  

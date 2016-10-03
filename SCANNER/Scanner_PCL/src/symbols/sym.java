@@ -47,6 +47,97 @@ public class sym {
   public static final int OP_DIV_ASIGN = 27;
   public static final int OP_RESTA_ASIGN = 25;
   public static final int OP_MENOR = 10;
+  
+  public static final int ERROR_LEXICO = -100;
+  
+  public static String getValue(int pValue)
+  {
+      String res = "";
+      
+      switch(pValue)
+      {
+          case OP_MAYOR:
+              return "Operador Mayor";
+          case DOS_PUNTO:
+              return "Dos puntos";
+          case COMMENT:
+              return "Comentario";
+          case STRING_C:
+              return "Literal Hilera";
+          case ENTERO:
+                return "Literal Número entero";
+            case OP_MULTIPLICACION:
+                return "Operador Multiplicación";
+            case OP_SHIFT_DER:
+                return "Operador corrimiento hacia la derecha";
+            case OP_INC:
+                return "Operador Incremento";
+            case CHARACTER:
+                return "Literal  Caracter";
+            case SUMA:
+                return "Operador adición";
+            case NOTA_CIENTIFICA:
+                return "Literal Notación científica";
+            case ID:
+                return "Identificador";
+            case PUNTO_COMA:
+                return "Punto y coma";
+            case OP_SUMA_ASIGN:
+                return "Operador Suma y asignación";
+            case OP_DIVISION:
+                return "Operador División";
+            case COMA:
+                return "Coma";
+            case OP_RESTA:
+                return "Operador Resta";
+            case PALABRA_RESERVADA:
+                return "Palabra reservada";
+            case PAR_CERR:
+                return "Paréntesis derecho";
+            case OP_DISTINTO:
+                return "Operador de desigualdad";
+            case OP_MAYOR_IGUAL:
+                return "Operador Mayor o igual";
+            case OP_MUL_ASIGN :
+                return "Operador Multiplicación y asignación";
+            case PUNTO:
+                return "Punto";
+            case OP_IGUAL:
+                return "Operador Igual";
+            case OP_SHIFT_IZQ_ASIGN:
+                return "Operador Corrimiento hacia la izquierda y asignación";
+            case PAR_APER:
+                return "Paréntesis izquierdo";
+            case OP_DEC:
+                return "Operador Decremento";
+            case BRA_CERR:
+                return "Bracket derecho";
+            case OP_MENOR_IGUAL:
+                return "Operador Menor o igual";
+            case ASIGN:
+                return "Asignación";
+            case OP_SHIFT_IZQ:
+                return "Operador Corrimiento hacia la izquierda";
+            case OP_SUMA :
+                return "Operador Suma";
+            case BRA_APER:
+                return "Bracket izquierdo";
+            case OP_SHIFT_DER_ASIGN:
+                return "Operador Corrimiento hacia la derecha y asignación";
+            case FLOTANTE:
+                return "Literal Número flotante";
+            case OP_DIV_ASIGN:
+                return "Operador División y asignación";
+            case OP_RESTA_ASIGN:
+                return "Operador Resta y asignación";
+            case OP_MENOR: 
+                return "Operador Menor";
+            default:
+                return res + "No hallado";
+      }
+
+  }
+  
 }
 
 
