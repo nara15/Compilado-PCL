@@ -919,7 +919,7 @@ private Symbol token(int type, Object value)
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { System.out.println("Caracter inválido " + yytext());
+            { return token(sym.ERROR_LEXICO, "Caracter inválido " + yytext());
             }
           case 40: break;
           case 2: 
@@ -1011,7 +1011,9 @@ private Symbol token(int type, Object value)
             }
           case 62: break;
           case 24: 
-            { return token(sym.ID, yytext().toLowerCase());
+            { 
+                return token(sym.ID, yytext().toLowerCase());
+            
             }
           case 63: break;
           case 25: 

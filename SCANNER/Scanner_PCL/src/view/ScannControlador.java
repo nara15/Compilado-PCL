@@ -1,29 +1,42 @@
 
-package scanner_pcl;
+package view;
 
-import java.nio.file.Paths;
+import scanner_pcl.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import java_cup.runtime.Symbol;
 
 /**
  *
  * @author José Mario Naranjo Leiva
  */
-public class Scann_Main 
+public class ScannControlador 
 {
-
-    public static void main(String[] args) 
+    
+    private static final Scanner_PCL s = new Scanner_PCL();
+    
+    private ArrayList<Symbol> _errors;
+    
+    public String analizarErrores()
     {
-        String rootPath = Paths.get("").toAbsolutePath().toString();
+        String res = "";
         
-        String file = rootPath + "/src/scanner_pcl/test1.txt";
+        _errors = s.getErrors();
         
-        Scanner_PCL s = new Scanner_PCL();
+        for (Symbol sym : _errors)
+        {
+            res += sym.value + " Número de línea: " + (sym.left + 1) + " Número de columna: " + (sym.right + 1) + "\n";
+        }
         
-        s.processFile(file);
+        return res;
+    }
+    
+    public String analizar(String pPath)
+    {
+        s.processFile(pPath);
         s.countTokens();
         
          
@@ -32,7 +45,6 @@ public class Scann_Main
        
         Iterator<Entry<Object,ArrayList<Integer>>> i = tokens.entrySet().iterator();
         String lines = "";
-        
         String res = "";
         while(i.hasNext())
         {
@@ -48,14 +60,12 @@ public class Scann_Main
                 lines += entry_count.getKey() + "(" + entry_count.getValue() + ") " ;
              
              }
-             res += symbols.sym.getValue(types.get(entry.getKey())) + "_____" + entry.getKey() + "_____" + lines + "\n";
+             res += symbols.sym.getValue(types.get(entry.getKey())) + " _____ " + entry.getKey() + " _____ " + lines + "\n";
              
              
              lines = "";
         }
-        System.out.println(s.getErrors());
-        System.out.println(res);
         
+        return res;
     }
-    
 }

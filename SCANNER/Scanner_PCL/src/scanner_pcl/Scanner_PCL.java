@@ -74,6 +74,7 @@ public class Scanner_PCL
             
             for (symbol = _scanner.next_token(); symbol.sym != 0; symbol = _scanner.next_token())
             {
+          
                 if (symbol.sym == symbols.sym.ERROR_LEXICO)
                 {
                     _errors.add(symbol);
