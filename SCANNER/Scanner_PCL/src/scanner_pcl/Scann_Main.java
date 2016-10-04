@@ -38,7 +38,7 @@ public class Scann_Main
         {
             
             Map.Entry<Object, ArrayList<Integer>> entry = i.next();
-      
+            
              Map<Integer,Long> counts =
                 entry.getValue().stream().collect(Collectors.groupingBy(e->e, Collectors.counting()));
              
@@ -48,7 +48,19 @@ public class Scann_Main
                 lines += entry_count.getKey() + "(" + entry_count.getValue() + ") " ;
              
              }
-             res += symbols.sym.getValue(types.get(entry.getKey())) + "_____" + entry.getKey() + "_____" + lines + "\n";
+             
+             if (types.get(entry.getKey()) == symbols.sym.ID)
+             {
+                String type = symbols.sym.getValue(types.get(entry.getKey()));
+                String st = (String) entry.getKey();
+                st = st.toLowerCase();
+                res += type + "_____" + st + "_____" + lines + "\n";
+             }
+             else
+             {
+                res += symbols.sym.getValue(types.get(entry.getKey())) + "_____" + entry.getKey() + "_____" + lines + "\n";
+             }
+            
              
              
              lines = "";

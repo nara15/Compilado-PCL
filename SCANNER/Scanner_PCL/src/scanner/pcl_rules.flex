@@ -159,7 +159,7 @@ BLANCO = [\n| |\t|\r]
 {NOTA_CIENTIFICA}       { return token(sym.NOTA_CIENTIFICA, yytext());}
 {STRINGCHARACTER}       { return token(sym.STRING_C, yytext());}
 {CHARACTER}             { return token(sym.CHARACTER, yytext());}
-{ID}                    { return token(sym.ID, yytext().toLowerCase());}
+{ID}                    { return token(sym.ID, yytext().toUpperCase());}
 
 {COMMENT_BODY}          { return token(sym.COMMENT, yytext());}
 {COMMENT_LINE}          { return token(sym.COMMENT, yytext());}

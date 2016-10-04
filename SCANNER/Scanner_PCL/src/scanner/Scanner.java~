@@ -1011,9 +1011,7 @@ private Symbol token(int type, Object value)
             }
           case 62: break;
           case 24: 
-            { 
-                return token(sym.ID, yytext().toLowerCase());
-            
+            { return token(sym.ID, yytext().toLowerCase());
             }
           case 63: break;
           case 25: 

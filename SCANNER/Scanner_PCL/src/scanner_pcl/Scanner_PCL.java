@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
 import scanner.Scanner;
+import symbols.sym;
 
 /**
  *
@@ -74,7 +75,7 @@ public class Scanner_PCL
             
             for (symbol = _scanner.next_token(); symbol.sym != 0; symbol = _scanner.next_token())
             {
-          
+               
                 if (symbol.sym == symbols.sym.ERROR_LEXICO)
                 {
                     _errors.add(symbol);
@@ -101,6 +102,7 @@ public class Scanner_PCL
     
     public void countTokens()
     {
+        
         _tokens.stream().forEach((Symbol token) -> {
             
             String newTokenValue = (String) token.value;
