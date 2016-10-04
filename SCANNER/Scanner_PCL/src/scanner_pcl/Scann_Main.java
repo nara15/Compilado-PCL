@@ -19,7 +19,7 @@ public class Scann_Main
     {
         String rootPath = Paths.get("").toAbsolutePath().toString();
         
-        String file = rootPath + "/src/scanner_pcl/test1.txt";
+        String file = rootPath + "/src/scanner_pcl/test1.pcl";
         
         Scanner_PCL s = new Scanner_PCL();
         

@@ -14,12 +14,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class VentanaScanner extends javax.swing.JFrame {
     
-    private ScannControlador _controlador;
+    private final ScannControlador _controlador;
     /**
      * Creates new form VentanScanner
      */
     public VentanaScanner() {
         initComponents();
+        this.setLocationRelativeTo(null);
         _controlador = new ScannControlador();
     }
 
