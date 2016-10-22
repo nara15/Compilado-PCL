@@ -1,0 +1,9 @@
+
+PROPÓSITO:
+
+En esta carpeta se encuentran proyectos con ejemplos relacionados con compiladores
+
+IMPORTANTE:
+
+Al abrir el proyecto se puede desplegar errores por la no existencia de las librerías.
+Por lo que es imperativo agregar los -JAR al proyecto.
