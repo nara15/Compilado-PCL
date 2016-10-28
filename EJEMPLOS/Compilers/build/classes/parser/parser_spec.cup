@@ -146,7 +146,7 @@ non terminal Integer    expr, factor, term;
    'expr' and at that point 'expr' will contain an integer value. */
    
    expr_part ::= expr:e
-                 {: System.out.println(" = " + e); :}
+                 {: System.out.println(" Expresion = " + e); :}
                  SEMI
                  ;
    
