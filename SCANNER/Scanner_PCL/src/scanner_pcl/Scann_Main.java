@@ -19,7 +19,7 @@ public class Scann_Main
     {
         String rootPath = Paths.get("").toAbsolutePath().toString();
         
-        String file = rootPath + "/src/scanner_pcl/test1.pcl";
+        String file = rootPath + "/src/scanner_pcl/literales.txt";
         
         Scanner_PCL s = new Scanner_PCL();
         
@@ -65,8 +65,8 @@ public class Scann_Main
              
              lines = "";
         }
-        System.out.println(s.getErrors());
-        System.out.println(res);
+        //System.out.println(s.getErrors());
+        //System.out.println(res);
         
     }
     

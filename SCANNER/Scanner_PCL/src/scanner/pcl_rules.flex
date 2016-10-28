@@ -34,27 +34,38 @@ COMMENT_LINE = {start}{comment_line_body}
 leftbrace = \([*]
 rightbrace = [*]\)
 commentbody = [^]*
-COMMENT_BODY = {leftbrace}{commentbody}{rightbrace}
+COMMENT_BODY = \(\*[^]*\*\)
+COMMENT_BODY_ERROR = \(\*[^]*
 
 /**
 * Expresiones regulares para comentarios de bloque {......}
 */
-COMMEN_BODY_BRACKETS = \{[^]*\}
+COMMEN_BODY_BRACKETS = \{[^\}]+\}
 
 /**
 *   LITERALES ------------------------------------------------------------------
 */
 ENTERO = \d+
 FLOTANTE = -?\d+\.\d+
-NOTA_CIENTIFICA = (-?\d+\.?\d+)(E)-?[0-9]+
+NOTA_CIENTIFICA = (\d+\.\d+)(E)-?[0-9]+
 STRINGCHARACTER = \"[^\"]*\"
 CHARACTER = #\d+
 
 
+ERROR_NOTA_1 = (\d+)(\E)-?[0-9]+
+ERROR_NOTA_2 = (\d+\.\d+)(E)
+ERROR_NOTA_3 = (\d+\.\d+)(E)-?[0-9]\.[0-9]+
+
+ERROR_PUNTO_ANTES = \.\d+
+ERROR_PUNTO_DESPUES = -?\d+\.
+
+ERROR_STRING = [0-9]+[_|:|a-z|A-Z][a-z|A-Z|0-9|_|:]{0,127}
+ERROR_STRING_SIN_CERRAR = \"[^\"]*
+
 /*
 *   IDENTIFICADORES ------------------------------------------------------------
 */
-ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]{1,127}
+ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]{0,127}
 
 
 BLANCO = [\n| |\t|\r]
@@ -164,5 +175,12 @@ BLANCO = [\n| |\t|\r]
 {COMMENT_BODY}          { return token(sym.COMMENT, yytext());}
 {COMMENT_LINE}          { return token(sym.COMMENT, yytext());}
 {COMMEN_BODY_BRACKETS}  { return token(sym.COMMENT, yytext());}
-                 
+
+{ERROR_PUNTO_ANTES}     { return token(sym.ERROR_LEXICO, "No tiene nada antes del punto " + yytext()); } 
+{ERROR_PUNTO_DESPUES}    { return token(sym.ERROR_LEXICO, "No tiene nada después del punto" + yytext()); }   
+{ERROR_NOTA_1}          { return token(sym.ERROR_LEXICO, "Notación científica mala " + yytext()); }
+{ERROR_NOTA_2}          { return token(sym.ERROR_LEXICO, "Notación científica mala - error no tiene nada después del exponente" + yytext()); }
+{ERROR_NOTA_3}            { return token(sym.ERROR_LEXICO, "Notación científica mala - error el numero después del E tiene que ser entero" + yytext()); }
+{COMMENT_BODY_ERROR}      { return token(sym.ERROR_LEXICO, "Comentario no cerrado" + yytext()); }
+{ERROR_STRING}          { return token(sym.ERROR_LEXICO, "No debe comenzar con números" + yytext()); }
 .                       { return token(sym.ERROR_LEXICO, "Caracter inválido " + yytext()); }  
