@@ -177,10 +177,10 @@ BLANCO = [\n| |\t|\r]
 {COMMEN_BODY_BRACKETS}  { return token(sym.COMMENT, yytext());}
 
 {ERROR_PUNTO_ANTES}     { return token(sym.ERROR_LEXICO, "No tiene nada antes del punto " + yytext()); } 
-{ERROR_PUNTO_DESPUES}    { return token(sym.ERROR_LEXICO, "No tiene nada después del punto" + yytext()); }   
+{ERROR_PUNTO_DESPUES}   { return token(sym.ERROR_LEXICO, "No tiene nada después del punto" + yytext()); }   
 {ERROR_NOTA_1}          { return token(sym.ERROR_LEXICO, "Notación científica mala " + yytext()); }
 {ERROR_NOTA_2}          { return token(sym.ERROR_LEXICO, "Notación científica mala - error no tiene nada después del exponente" + yytext()); }
-{ERROR_NOTA_3}            { return token(sym.ERROR_LEXICO, "Notación científica mala - error el numero después del E tiene que ser entero" + yytext()); }
-{COMMENT_BODY_ERROR}      { return token(sym.ERROR_LEXICO, "Comentario no cerrado" + yytext()); }
+{ERROR_NOTA_3}          { return token(sym.ERROR_LEXICO, "Notación científica mala - error el numero después del E tiene que ser entero" + yytext()); }
+{COMMENT_BODY_ERROR}    { return token(sym.ERROR_LEXICO, "Comentario no cerrado" + yytext()); }
 {ERROR_STRING}          { return token(sym.ERROR_LEXICO, "No debe comenzar con números" + yytext()); }
 .                       { return token(sym.ERROR_LEXICO, "Caracter inválido " + yytext()); }  
