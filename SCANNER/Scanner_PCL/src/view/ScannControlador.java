@@ -20,6 +20,11 @@ public class ScannControlador
     
     private ArrayList<Symbol> _errors;
     
+    public void clean()
+    {
+        s.clean();
+    }
+    
     public String analizarErrores()
     {
         String res = "";
@@ -65,11 +70,11 @@ public class ScannControlador
                 String type = symbols.sym.getValue(types.get(entry.getKey()));
                 String st = (String) entry.getKey();
                 st = st.toLowerCase();
-                res += type + "_____" + st + "_____" + lines + "\n";
+                res += type + " _____ " + st + " _____ " + lines + "\n";
              }
              else
              {
-                res += symbols.sym.getValue(types.get(entry.getKey())) + "_____" + entry.getKey() + "_____" + lines + "\n";
+                res += symbols.sym.getValue(types.get(entry.getKey())) + " _____ " + entry.getKey() + " _____ " + lines + "\n";
              }
              
              

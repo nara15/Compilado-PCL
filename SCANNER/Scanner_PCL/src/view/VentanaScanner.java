@@ -113,6 +113,8 @@ public class VentanaScanner extends javax.swing.JFrame {
            this.txtErrores.setText("");
            this.txtErrores.setText(_controlador.analizarErrores());
         }
+        
+        _controlador.clean();
        
     }//GEN-LAST:event_bntCargarActionPerformed
 

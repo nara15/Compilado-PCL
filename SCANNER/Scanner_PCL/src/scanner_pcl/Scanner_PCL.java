@@ -34,6 +34,14 @@ public class Scanner_PCL
         _tokens_lines = new HashMap<>(); 
         _tokens_type = new HashMap<>();
     }
+    
+    public void clean()
+    {
+        _tokens.clear();
+        _errors.clear();
+        _tokens_lines.clear();
+        _tokens_type.clear();
+    }
 
     public ArrayList<Symbol> getTokens()
     {

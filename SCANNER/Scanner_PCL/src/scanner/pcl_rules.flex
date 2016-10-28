@@ -66,55 +66,55 @@ BLANCO = [\n| |\t|\r]
     /*
     * PALABRAS RESERVADAS
     */
-    "and"        { return token(sym.PALABRA_RESERVADA, yytext()); }
-    "array"      { return token(sym.PALABRA_RESERVADA, yytext()); }
-    "begin"      { return token(sym.PALABRA_RESERVADA, yytext()); }
-    "boolean"    { return token(sym.PALABRA_RESERVADA, yytext()); }
-    "byte"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "case"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "char"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "const"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "div"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "do"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "downto"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "else"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "end"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "false"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "for"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "forward"    { return token(sym.PALABRA_RESERVADA, yytext());}
-    "function"   { return token(sym.PALABRA_RESERVADA, yytext());}
-    "goto"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "if"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "in"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "inline"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "int"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "label"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "longint"    { return token(sym.PALABRA_RESERVADA, yytext());}
-    "mod"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "nil"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "not"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "of"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "or"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "packed"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "procedure"  { return token(sym.PALABRA_RESERVADA, yytext());}
-    "program"    { return token(sym.PALABRA_RESERVADA, yytext());}
-    "read"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "real"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "record"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "repeat"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "set"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "shortint"   { return token(sym.PALABRA_RESERVADA, yytext());}
-    "string"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "then"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "to"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "true"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "type"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "until"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "var"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "while"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "with"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "write"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "xor"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "AND"        { return token(sym.PALABRA_RESERVADA, yytext()); }
+    "ARRAY"      { return token(sym.PALABRA_RESERVADA, yytext()); }
+    "BEGIN"      { return token(sym.PALABRA_RESERVADA, yytext()); }
+    "BOOLEAN"    { return token(sym.PALABRA_RESERVADA, yytext()); }
+    "BYTE"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "CASE"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "CHAR"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "CONST"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "DIV"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "DO"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "DOWNTO"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "ELSE"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "END"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "FALSE"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "FOR"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "FORWARD"    { return token(sym.PALABRA_RESERVADA, yytext());}
+    "FUNCTION"   { return token(sym.PALABRA_RESERVADA, yytext());}
+    "GOTO"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "IF"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "IN"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "INLINE"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "INT"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "LABEL"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "LONGINT"    { return token(sym.PALABRA_RESERVADA, yytext());}
+    "MOD"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "NIL"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "NOT"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "OF"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "OR"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "PACKED"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "PROCEDURE"  { return token(sym.PALABRA_RESERVADA, yytext());}
+    "PROGRAM"    { return token(sym.PALABRA_RESERVADA, yytext());}
+    "READ"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "REAL"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "RECORD"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "REPEAT"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "SET"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "SHORTINT"   { return token(sym.PALABRA_RESERVADA, yytext());}
+    "STRING"     { return token(sym.PALABRA_RESERVADA, yytext());}
+    "THEN"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "TO"         { return token(sym.PALABRA_RESERVADA, yytext());}
+    "TRUE"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "TYPE"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "UNTIL"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "VAR"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "WHILE"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "WITH"       { return token(sym.PALABRA_RESERVADA, yytext());}
+    "WRITE"      { return token(sym.PALABRA_RESERVADA, yytext());}
+    "XOR"        { return token(sym.PALABRA_RESERVADA, yytext());}
     
     /**
     * OPERADORES Y SEPARADORES
