@@ -1,0 +1,22 @@
+h1 {font-size: 28px; font-family: 'Lucida Console', Monaco, monospace;}
+table {
+    font-family: 'Lucida Console', Monaco, monospace;
+    border: 1px solid rgb(200,200,200);
+    width: 100%;
+    overflow-x:auto;
+    border-collapse: collapse;
+
+}
+th{font-family: sans-serif, Helvetica;}
+td{font-family: 'Lucida Console', Monaco, monospace;}
+td, th {
+    border: 1px solid rgb(210,210,210);
+    text-align: left;
+    min-height: 60px;
+    width: 30%;
+    padding: 10px;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(210,210,210);
+}
