@@ -31,11 +31,7 @@ COMMENT_LINE = {start}{comment_line_body}
 /**
  * Expresiones regulares para comentarios de bloque (* ..... *)
  */
-leftbrace = \([*]
-rightbrace = [*]\)
-commentbody = [^]*
 COMMENT_BODY = \(\*[^]*\*\)
-COMMENT_BODY_ERROR = \(\*[^]*
 
 /**
 * Expresiones regulares para comentarios de bloque {......}
@@ -51,6 +47,15 @@ NOTA_CIENTIFICA = (\d+\.\d+)(E)-?[0-9]+
 STRINGCHARACTER = \"[^\"]*\"
 CHARACTER = #\d+
 
+/*
+*   IDENTIFICADORES ------------------------------------------------------------
+*/
+ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]{0,127}
+
+/**
+*   ERRORES --------------------------------------------------------------------
+*/
+COMMENT_BODY_ERROR = "(*" ~"\n" | "(*" ~"\n\r" | "(*" ~"\r\n" | "(*" ~"\r"
 
 ERROR_NOTA_1 = (\d+)(\E)-?[0-9]+
 ERROR_NOTA_2 = (\d+\.\d+)(E)
@@ -60,14 +65,7 @@ ERROR_PUNTO_ANTES = \.\d+
 ERROR_PUNTO_DESPUES = -?\d+\.
 
 ERROR_STRING = [0-9]+[_|:|a-z|A-Z][a-z|A-Z|0-9|_|:]{0,127}
-
-
-ERROR_STRING_SIN_CERRAR = (.*?\")
-
-/*
-*   IDENTIFICADORES ------------------------------------------------------------
-*/
-ID = [_|a-z|A-Z][a-z|A-Z|0-9|_]{0,127}
+ERROR_STRING_SIN_CERRAR = [\"] ~[^\"]
 
 
 BLANCO = [\n| |\t|\r]
@@ -166,18 +164,24 @@ BLANCO = [\n| |\t|\r]
 }
 
 {BLANCO}                { /*Omitir el espacio blanco*/ }
-
+    /**
+    * LITERALES
+    */
 {ENTERO}                { return token(sym.ENTERO, yytext()); }
 {FLOTANTE}              { return token(sym.FLOTANTE, yytext());}
 {NOTA_CIENTIFICA}       { return token(sym.NOTA_CIENTIFICA, yytext());}
 {STRINGCHARACTER}       { return token(sym.STRING_C, yytext());}
 {CHARACTER}             { return token(sym.CHARACTER, yytext());}
 {ID}                    { return token(sym.ID, yytext().toUpperCase());}
-
+    /**
+    * COMENTARIOS
+    */
 {COMMENT_BODY}          { return token(sym.COMMENT, yytext());}
 {COMMENT_LINE}          { return token(sym.COMMENT, yytext());}
 {COMMEN_BODY_BRACKETS}  { return token(sym.COMMENT, yytext());}
-
+    /**
+    * ERRORES CONOCIDOS
+    */
 {ERROR_STRING_SIN_CERRAR} { return token(sym.ERROR_LEXICO, "Hilera sin cerrar " + yytext());}
 {ERROR_PUNTO_ANTES}     { return token(sym.ERROR_LEXICO, "No tiene nada antes del punto " + yytext()); } 
 {ERROR_PUNTO_DESPUES}   { return token(sym.ERROR_LEXICO, "No tiene nada después del punto" + yytext()); }   

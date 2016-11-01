@@ -11,7 +11,7 @@ lineas"
 
 
 
-"ljhgsdkjaghsdf" ;  //String sin cerrar
+"ljhgsdkjaghsdf ;  //String sin cerrar
 
 
 
