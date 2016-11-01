@@ -19,7 +19,7 @@ import scanner.Lexer;
  */
 public class Parser {
     
-     private static final String pPath = "M:\\Github\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
+     private static final String pPath = "F:\\git\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
     /**
      * @param args the command line arguments
      */

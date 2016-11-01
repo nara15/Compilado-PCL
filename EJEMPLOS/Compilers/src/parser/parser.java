@@ -116,20 +116,18 @@ public class parser extends java_cup.runtime.lr_parser {
 
     public void report_fatal_error(String   message, Object   info)
     {
-         
+         System.out.println("Hola");
     }
     
 
    
-    /* Change the method report_fatal_error so when it reports a fatal
-       error it will display the line and column number of where the
-       fatal error occurred in the input as well as the reason for the
-       fatal error which is passed into the method in the object
-       'message' and then exit.*/
+    
     public void syntax_error(Symbol cur_token) {
        
-        System.out.println("Sytax error at line " + (cur_token.left+1) +
-            ", column " + cur_token.right + " | " + cur_token.value);
+//        System.out.println("Sytax error at line " + (cur_token.left + 1) +
+//            ", column " + cur_token.right + " | " + cur_token.value);
+        //System.out.println("Hola");
+         System.out.println("compiler has detected a syntax error at line " + cur_token.left + " column " + cur_token.right); 
 
     }
 
