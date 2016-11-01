@@ -1,0 +1,9 @@
+class clasePrueba : int x 
+	float y
+	x= funcion1()
+	print("hola")
+	if (True): x=1
+	clase.funcion(x
+	;
+
+;
