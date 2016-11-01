@@ -24,7 +24,7 @@ public class Test {
     {
         String rootPath = Paths.get("").toAbsolutePath().toString();
         
-        String file = rootPath + "/src/scanner_pcl/literales.txt";
+        String file = rootPath + "/src/scanner_pcl/test.pcl";
         
         Scanner s;
        

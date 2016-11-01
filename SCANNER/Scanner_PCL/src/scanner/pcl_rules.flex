@@ -60,7 +60,9 @@ ERROR_PUNTO_ANTES = \.\d+
 ERROR_PUNTO_DESPUES = -?\d+\.
 
 ERROR_STRING = [0-9]+[_|:|a-z|A-Z][a-z|A-Z|0-9|_|:]{0,127}
-ERROR_STRING_SIN_CERRAR = \"[^\"]*
+
+
+ERROR_STRING_SIN_CERRAR = (.*?\")
 
 /*
 *   IDENTIFICADORES ------------------------------------------------------------
@@ -176,6 +178,7 @@ BLANCO = [\n| |\t|\r]
 {COMMENT_LINE}          { return token(sym.COMMENT, yytext());}
 {COMMEN_BODY_BRACKETS}  { return token(sym.COMMENT, yytext());}
 
+{ERROR_STRING_SIN_CERRAR} { return token(sym.ERROR_LEXICO, "Hilera sin cerrar " + yytext());}
 {ERROR_PUNTO_ANTES}     { return token(sym.ERROR_LEXICO, "No tiene nada antes del punto " + yytext()); } 
 {ERROR_PUNTO_DESPUES}   { return token(sym.ERROR_LEXICO, "No tiene nada después del punto" + yytext()); }   
 {ERROR_NOTA_1}          { return token(sym.ERROR_LEXICO, "Notación científica mala " + yytext()); }

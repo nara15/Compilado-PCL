@@ -28,14 +28,14 @@ public class PascalCompiler {
         
         try 
         {
-            PascalLexer lexer = new PascalLexer(new FileReader("M:\\Github\\Compilador-PCL\\EJEMPLOS\\PascalCompiler\\src\\pascalcompiler\\test3.p"));
+            PascalLexer lexer = new PascalLexer(new FileReader("G:\\git\\Compilador-PCL\\EJEMPLOS\\PascalCompiler\\src\\pascalcompiler\\test2.p"));
             
             for (sym = lexer.next_token(); sym.sym != 0;
                     sym = lexer.next_token()) {
 
                 System.out.println("Token " + sym +
                     ", with value = " + sym.value + 
-                    "; at line " + sym.left + ", column " + sym.right);
+                    " -- at line " + sym.left + ", column " + sym.right);
 
             }
             
