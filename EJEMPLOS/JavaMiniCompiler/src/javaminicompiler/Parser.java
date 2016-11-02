@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package compilers;
+package javaminicompiler;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,7 +11,8 @@ import java.io.FileReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import parser.parser;
-import scanner.Lexer;
+import scanner.Scanner;
+
 
 /**
  *
@@ -19,7 +20,7 @@ import scanner.Lexer;
  */
 public class Parser {
     
-     private static final String pPath = "G:\\git\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
+     private static final String pPath = "G:\\git\\Compilador-PCL\\EJEMPLOS\\JavaMiniCompiler\\src\\javaminicompiler\\test1.txt";
     /**
      * @param args the command line arguments
      */
@@ -29,7 +30,7 @@ public class Parser {
          try
          {
              br = new BufferedReader(new FileReader(pPath));
-             Lexer scanner = new Lexer(br);
+             Scanner scanner = new Scanner(br);
              parser p = new parser(scanner);
              
              Object result = p.parse().value; 

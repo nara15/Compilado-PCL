@@ -196,5 +196,5 @@ SingleCharacter = [^\r\n\'\\]
 
 /* error fallback */
 
-.|\n                             { return symbol(sym.ILLEGAL_CHARACTER, yytext());}
+[^]|\n                             { return symbol(sym.ILLEGAL_CHARACTER, yytext());}
 <<EOF>>                          { return symbol(sym.EOF); }
