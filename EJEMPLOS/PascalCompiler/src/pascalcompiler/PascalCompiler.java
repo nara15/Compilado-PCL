@@ -28,7 +28,7 @@ public class PascalCompiler {
         
         try 
         {
-            PascalLexer lexer = new PascalLexer(new FileReader("F:\\git\\Compilador-PCL\\EJEMPLOS\\PascalCompiler\\src\\pascalcompiler\\test2.p"));
+            PascalLexer lexer = new PascalLexer(new FileReader("G:\\git\\Compilador-PCL\\EJEMPLOS\\PascalCompiler\\src\\pascalcompiler\\test2.p"));
             
             for (sym = lexer.next_token(); sym.sym != 0;
                     sym = lexer.next_token()) {

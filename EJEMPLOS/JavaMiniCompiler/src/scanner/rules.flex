@@ -24,7 +24,7 @@ import symbols.sym;
 %line
 %column
 %cup
-%debug
+
 
 %{
   StringBuffer string = new StringBuffer();
@@ -35,6 +35,11 @@ import symbols.sym;
 
   private Symbol symbol(int type, Object value) {
     return new Symbol(type, yyline+1, yycolumn+1, value);
+  }
+  public String current_lexeme(){
+    int l = yyline+1;
+    int c = yycolumn+1;
+    return " (line: "+l+" , column: "+c+" , lexeme: '"+yytext()+"')";
   }
 %}
 

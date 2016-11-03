@@ -29,12 +29,12 @@ public class JavaMiniCompiler {
         {
             Scanner lexer = new Scanner(new FileReader("G:\\git\\Compilador-PCL\\EJEMPLOS\\JavaMiniCompiler\\src\\javaminicompiler\\test.txt"));
             
-            for (sym = lexer.next_token(); sym.sym != 0;
+            for (sym = lexer.next_token(); sym.sym != symbols.sym.EOF;
                     sym = lexer.next_token()) {
 
-//                System.out.println("Token " + sym +
-//                    ", with value = " + sym.value + 
-//                    " -- at line " + sym.left + ", column " + sym.right);
+                System.out.println("Token " + sym +
+                    ", with value = " + sym.value + 
+                    " -- at line " + sym.left + ", column " + sym.right);
 
             }
             

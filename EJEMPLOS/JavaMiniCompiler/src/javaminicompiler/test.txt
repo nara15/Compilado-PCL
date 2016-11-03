@@ -1,4 +1,4 @@
-public class String{
+@public class String{
 }
 
 public class Int{
@@ -10,7 +10,7 @@ public class Int{
     }
 
     public int f() {
-	return fact(n);
+	return * fact(n);
     }
 
     int fact(int n) {
@@ -22,13 +22,12 @@ public class Int{
 public class Test{
     public void main(){
 	int n, f;
-	Int t;
+	Int t
 	n = 0;
-	while(n < 1 || n > 16) { printf ("Enter an integer greater than 0 and less than 17: ");	
-		    			 scanf ("%d", &n);
+	while(n < 1 || n > 16) { 
 	}
 	t = new Int(n);
 	f = t.f();	
-	printf("factorial(%d)= %d\n", n, f);
+	
     } 
 }
