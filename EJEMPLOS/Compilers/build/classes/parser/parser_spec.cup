@@ -127,8 +127,6 @@ non terminal Integer    expr, factor, term;
    expr_part ::= expr:e
                 {: System.out.println(" Expresion = " + e); :}
                 SEMI
-                | 
-                error {: parser.report_error("expr_part - Hace falta el punto y coma","WRONG"); :} 
                 ;
    
 /* 'expr' can lead to 'expr PLUS factor', 'expr MINUS factor', or

@@ -16,9 +16,9 @@ import scanner.Lexer;
  *
  * @author jonaranjo
  */
-public class Compilers {
+public class Scanner_Main {
 
-    private static final String pPath = "C:\\Users\\jonaranjo\\Documents\\NetBeansProjects\\Compilers\\src\\compilers\\test.p";
+    private static final String pPath = "M:\\Github\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
     /**
      * @param args the command line arguments
      */

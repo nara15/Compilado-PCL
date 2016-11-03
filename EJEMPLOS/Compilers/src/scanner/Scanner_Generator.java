@@ -1,5 +1,5 @@
 
-package compilers;
+package scanner;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -8,7 +8,7 @@ import java.nio.file.Paths;
  *
  * @author José Mario Naranjo Leiva
  */
-public class Generator
+public class Scanner_Generator
 {
     public static void main(String[] args)
     {

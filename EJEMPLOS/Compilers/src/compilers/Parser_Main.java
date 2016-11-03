@@ -10,16 +10,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import parser.parser;
+import parser.Parser;
 import scanner.Lexer;
+
+
 
 /**
  *
  * @author jonaranjo
  */
-public class Parser {
+public class Parser_Main {
     
-     private static final String pPath = "G:\\git\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
+     private static final String pPath = "M:\\Github\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
     /**
      * @param args the command line arguments
      */
@@ -30,7 +32,7 @@ public class Parser {
          {
              br = new BufferedReader(new FileReader(pPath));
              Lexer scanner = new Lexer(br);
-             parser p = new parser(scanner);
+             Parser p = new Parser(scanner);
              
              Object result = p.parse().value; 
              
@@ -38,9 +40,9 @@ public class Parser {
          } 
          catch (FileNotFoundException ex)
          {
-             Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+             Logger.getLogger(Parser_Main.class.getName()).log(Level.SEVERE, null, ex);
          } catch (Exception ex) {
-             Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+             Logger.getLogger(Parser_Main.class.getName()).log(Level.SEVERE, null, ex);
          } 
         
     }
