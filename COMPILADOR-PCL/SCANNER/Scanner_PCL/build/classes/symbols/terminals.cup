@@ -1,0 +1,44 @@
+terminal PALABRA_RESERVADA;
+
+terminal COMA;
+terminal PUNTO_COMA;
+terminal OP_INC;
+terminal OP_DEC;
+terminal OP_MAYOR_IGUAL;
+terminal OP_MAYOR;
+terminal OP_MENOR_IGUAL;
+terminal OP_MENOR;
+terminal OP_DISTINTO;
+terminal OP_IGUAL;
+terminal OP_SUMA;
+terminal OP_RESTA;
+terminal OP_MULTIPLICACION;
+terminal OP_DIVISION;
+terminal PAR_APER;
+terminal PAR_CERR;
+terminal BRA_APER;
+terminal BRA_CERR;
+terminal ASIGN;
+terminal PUNTO;
+terminal DOS_PUNTO;
+terminal OP_SUMA_ASIGN;
+terminal OP_RESTA_ASIGN;
+terminal OP_MUL_ASIGN;
+terminal OP_DIV_ASIGN;
+terminal OP_SHIFT_DER;
+terminal OP_SHIFT_IZQ;
+terminal OP_SHIFT_IZQ_ASIGN;
+terminal OP_SHIFT_DER_ASIGN;
+
+terminal ENTERO;
+terminal FLOTANTE;
+terminal NOTA_CIENTIFICA;
+terminal STRING_C;
+terminal CHARACTER;
+
+terminal ID;
+terminal SUMA;
+terminal COMMENT;
+
+non terminal dummy;
+dummy::=;

@@ -21,7 +21,7 @@ import scanner.Lexer;
  */
 public class Parser_Main {
     
-     private static final String pPath = "C:\\Users\\Jose Mario\\Documents\\GitHub\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
+     private static final String pPath = "G:\\git\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
     /**
      * @param args the command line arguments
      */
