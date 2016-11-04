@@ -12,25 +12,34 @@ parser code {:
     
      public void report_error(String message, Object info) 
     {
+
       if (info instanceof String)
       {
 
 
         System.err.println("  " + "==> " + info + " "+ message + 
-                                          "\n       Parsing resumed from 2nd token before "  + "\n");
+                                          "\n       Parsing resumed from 2nd token before " 
+                + " token: " + this.cur_token.value
+                + " fila: " + (this.cur_token.left) 
+                +  " columna: " + (this.cur_token.right) +"\n");
+        System.out.println(this.cur_err_token().value + " " + this.cur_err_token().left + " " +
+                this.cur_err_token().right);
       }
       else 
       {
           StringBuffer m = new StringBuffer("Error ");
           if (info instanceof java_cup.runtime.Symbol) 
           {
-
+            java_cup.runtime.Symbol s = (java_cup.runtime.Symbol) info;
              m.append( "("+info.toString()+")" );     
              m.append(" : "+message);   
              System.err.println(m); 
+
+             System.out.println(s.value + " " + s.left + "  " + s.right);
           }
 
       }
+
     }
    
     
@@ -95,32 +104,21 @@ non terminal Integer    expr, factor, term;
                  | ID     
 */
       
-   expr_list ::= expr_list expr_part
-                 |
-                 expr_part;
+   expr_list ::= expr_list expr_part | expr_part;
       
-   expr_part ::= expr SEMI;
+   expr_part ::= expr SEMI | error:e {: parser.report_error("Syntax error, skip rest",e); :} SEMI;
    
-   expr      ::= expr PLUS factor
-                 |
-                 expr MINUS factor
-                 |
-                 factor
-                 | 
-                 error 
-                 {: parser.report_error("primary_no_new_array","WRONG"); :} factor
-                 ;
+   expr     ::=   expr PLUS factor
+                | expr MINUS factor
+                | factor
+                ;
    
-   factor    ::= factor TIMES term
-                 |
-                 factor DIVIDE term
-                 |
-                 term
-                 ;
+   factor   ::=  factor TIMES term
+                | factor DIVIDE term
+                | term
+                ;
    
-   term      ::= LPAREN expr RPAREN
-                 |
-                 NUMBER
-                 |
-                 ID
-                 ;
+   term     ::=   LPAREN expr RPAREN
+                | NUMBER
+                | ID
+                ;

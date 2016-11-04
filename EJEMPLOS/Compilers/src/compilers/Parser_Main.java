@@ -21,13 +21,13 @@ import scanner.Lexer;
  */
 public class Parser_Main {
     
-     private static final String pPath = "M:\\Github\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
+     private static final String pPath = "C:\\Users\\Jose Mario\\Documents\\GitHub\\Compilador-PCL\\EJEMPLOS\\Compilers\\src\\compilers\\test.p";
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) 
     {
-        BufferedReader br = null;
+        BufferedReader br;
          try
          {
              br = new BufferedReader(new FileReader(pPath));

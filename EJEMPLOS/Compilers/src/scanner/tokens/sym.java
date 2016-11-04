@@ -18,5 +18,6 @@ public class sym {
   public static final int RPAREN = 8;
   public static final int TIMES = 5;
   public static final int LPAREN = 7;
+  public static final int ERROR = 30;
 }
 
