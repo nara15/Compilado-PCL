@@ -77,55 +77,55 @@ BLANCO = [\n| |\t|\r]
     /*
     * PALABRAS RESERVADAS
     */
-    "AND"        { return token(sym.PALABRA_RESERVADA, yytext()); }
-    "ARRAY"      { return token(sym.PALABRA_RESERVADA, yytext()); }
-    "BEGIN"      { return token(sym.PALABRA_RESERVADA, yytext()); }
-    "BOOLEAN"    { return token(sym.PALABRA_RESERVADA, yytext()); }
-    "BYTE"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "CASE"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "CHAR"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "CONST"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "DIV"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "DO"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "DOWNTO"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "ELSE"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "END"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "FALSE"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "FOR"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "FORWARD"    { return token(sym.PALABRA_RESERVADA, yytext());}
-    "FUNCTION"   { return token(sym.PALABRA_RESERVADA, yytext());}
-    "GOTO"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "IF"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "IN"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "INLINE"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "INT"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "LABEL"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "LONGINT"    { return token(sym.PALABRA_RESERVADA, yytext());}
-    "MOD"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "NIL"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "NOT"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "OF"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "OR"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "PACKED"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "PROCEDURE"  { return token(sym.PALABRA_RESERVADA, yytext());}
-    "PROGRAM"    { return token(sym.PALABRA_RESERVADA, yytext());}
-    "READ"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "REAL"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "RECORD"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "REPEAT"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "SET"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "SHORTINT"   { return token(sym.PALABRA_RESERVADA, yytext());}
-    "STRING"     { return token(sym.PALABRA_RESERVADA, yytext());}
-    "THEN"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "TO"         { return token(sym.PALABRA_RESERVADA, yytext());}
-    "TRUE"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "TYPE"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "UNTIL"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "VAR"        { return token(sym.PALABRA_RESERVADA, yytext());}
-    "WHILE"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "WITH"       { return token(sym.PALABRA_RESERVADA, yytext());}
-    "WRITE"      { return token(sym.PALABRA_RESERVADA, yytext());}
-    "XOR"        { return token(sym.PALABRA_RESERVADA, yytext());}
+    "AND"        { return token(1200, yytext()); }
+    "ARRAY"      { return token(1200, yytext()); }
+    "BEGIN"      { return token(1200, yytext()); }
+    "BOOLEAN"    { return token(sym.BOOLEAN, yytext()); }
+    "BYTE"       { return token(1200, yytext());}
+    "CASE"       { return token(1200, yytext());}
+    "CHAR"       { return token(sym.CHAR, yytext());}
+    "CONST"      { return token(1200, yytext());}
+    "DIV"        { return token(1200, yytext());}
+    "DO"         { return token(1200, yytext());}
+    "DOWNTO"     { return token(1200, yytext());}
+    "ELSE"       { return token(1200, yytext());}
+    "END"        { return token(1200, yytext());}
+    "FALSE"      { return token(1200, yytext());}
+    "FOR"        { return token(1200, yytext());}
+    "FORWARD"    { return token(1200, yytext());}
+    "FUNCTION"   { return token(1200, yytext());}
+    "GOTO"       { return token(1200, yytext());}
+    "IF"         { return token(1200, yytext());}
+    "IN"         { return token(1200, yytext());}
+    "INLINE"     { return token(1200, yytext());}
+    "INT"        { return token(sym.INT, yytext());}
+    "LABEL"      { return token(1200, yytext());}
+    "LONGINT"    { return token(sym.LONGINT, yytext());}
+    "MOD"        { return token(1200, yytext());}
+    "NIL"        { return token(1200, yytext());}
+    "NOT"        { return token(1200, yytext());}
+    "OF"         { return token(1200, yytext());}
+    "OR"         { return token(1200, yytext());}
+    "PACKED"     { return token(1200, yytext());}
+    "PROCEDURE"  { return token(1200, yytext());}
+    "PROGRAM"    { return token(1200, yytext());}
+    "READ"       { return token(1200, yytext());}
+    "REAL"       { return token(sym.BOOLEAN, yytext());}
+    "RECORD"     { return token(1200, yytext());}
+    "REPEAT"     { return token(1200, yytext());}
+    "SET"        { return token(1200, yytext());}
+    "SHORTINT"   { return token(sym.SHORTINT, yytext());}
+    "STRING"     { return token(sym.STRING, yytext());}
+    "THEN"       { return token(1200, yytext());}
+    "TO"         { return token(1200, yytext());}
+    "TRUE"       { return token(1200, yytext());}
+    "TYPE"       { return token(1200, yytext());}
+    "UNTIL"      { return token(1200, yytext());}
+    "VAR"        { return token(sym.VAR, yytext());}
+    "WHILE"      { return token(1200, yytext());}
+    "WITH"       { return token(1200, yytext());}
+    "WRITE"      { return token(1200, yytext());}
+    "XOR"        { return token(1200, yytext());}
     
     /**
     * OPERADORES Y SEPARADORES
@@ -182,12 +182,12 @@ BLANCO = [\n| |\t|\r]
     /**
     * ERRORES CONOCIDOS
     */
-{ERROR_STRING_SIN_CERRAR} { return token(sym.ERROR_LEXICO, "Hilera sin cerrar " + yytext());}
-{ERROR_PUNTO_ANTES}     { return token(sym.ERROR_LEXICO, "No tiene nada antes del punto " + yytext()); } 
-{ERROR_PUNTO_DESPUES}   { return token(sym.ERROR_LEXICO, "No tiene nada después del punto" + yytext()); }   
-{ERROR_NOTA_1}          { return token(sym.ERROR_LEXICO, "Notación científica mala " + yytext()); }
-{ERROR_NOTA_2}          { return token(sym.ERROR_LEXICO, "Notación científica mala - error no tiene nada después del exponente" + yytext()); }
-{ERROR_NOTA_3}          { return token(sym.ERROR_LEXICO, "Notación científica mala - error el numero después del E tiene que ser entero" + yytext()); }
-{COMMENT_BODY_ERROR}    { return token(sym.ERROR_LEXICO, "Comentario no cerrado" + yytext()); }
-{ERROR_STRING}          { return token(sym.ERROR_LEXICO, "No debe comenzar con números" + yytext()); }
-.                       { return token(sym.ERROR_LEXICO, "Caracter inválido " + yytext()); }  
+{ERROR_STRING_SIN_CERRAR} { return token(sym.error, "Hilera sin cerrar " + yytext());}
+{ERROR_PUNTO_ANTES}     { return token(sym.error, "No tiene nada antes del punto " + yytext()); } 
+{ERROR_PUNTO_DESPUES}   { return token(sym.error, "No tiene nada después del punto" + yytext()); }   
+{ERROR_NOTA_1}          { return token(sym.error, "Notación científica mala " + yytext()); }
+{ERROR_NOTA_2}          { return token(sym.error, "Notación científica mala - error no tiene nada después del exponente" + yytext()); }
+{ERROR_NOTA_3}          { return token(sym.error, "Notación científica mala - error el numero después del E tiene que ser entero" + yytext()); }
+{COMMENT_BODY_ERROR}    { return token(sym.error, "Comentario no cerrado" + yytext()); }
+{ERROR_STRING}          { return token(sym.error, "No debe comenzar con números" + yytext()); }
+.                       { return token(sym.error, "Caracter inválido " + yytext()); }  

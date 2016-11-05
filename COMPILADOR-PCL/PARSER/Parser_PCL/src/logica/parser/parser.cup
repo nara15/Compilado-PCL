@@ -1,0 +1,178 @@
+package logica.parser;
+  
+import java_cup.runtime.*;
+
+action code{:
+	public void ImprimeValor(String str){
+		System.out.println("Token: " + str) ;
+	}
+:}
+
+parser code{:
+	
+	public void report_fatal_error(String message, Object info) {
+		System.err.println("Error fatal. Imposible recuperarse.\n");
+	}
+        
+        public void unrecovered_syntax_error(Symbol cur_token) {
+        
+        }
+	
+        public void syntax_error(Symbol st) {
+        //System.out.println("CAMBIÉ");
+    	Simbolo s = (Simbolo) st.value;
+    	report_error("Syntax Error: "+ s.getSimbolo() + ". Linea: " + s.getLinea() + ". Columna: " + s.getColumna() + ". \n ", null);
+    }
+:}
+
+/* VARIABLES TERMINALES */
+terminal identificador, del, from, as,
+         with_, assert_, pass, yield,
+         import_, exec, lambda, this_, 
+         break_, continue_, input, is,
+         return_, range, in,
+         try_, except, if_, while_,
+         elif, else_, finally_, def,
+         class_, for_, int_, float_,
+         boolean_, list,char_, string, suma,
+         resta, multiplicacion, division, division_doble,
+         modulo, potencia, igual, mas_igual,
+         menos_igual, multiplicacion_igual, division_igual, modulo_igual,
+         potencia_igual, division_doble_igual, not_igual, menor_mayor,
+         mayor, menor_, mayor_igual, menor_igual,
+         igual_igual, and, or, ampersand,
+         pipe, circunflejo, tilde, shift_derecha,
+         shift_izquierda, not, not_symbol, parentesis_abre,
+         parentesis_cierra, coma, punto, dos_puntos, 
+         cuadrado_abre, cuadrado_cierra, true_, false_,
+         decimal_literal, decimal_long, hexa_literal, hexa_long,
+         octal_literal, octal_long, binario_literal, binario_long,
+         flotante_literal, double_literal, string_valor, char_valor,
+         string_literal, ERROR, char_literal, salto_linea,
+         punto_coma, print_;
+
+non terminal DECLARACION_VARIABLES, INICIO, TIPOS, 
+             VARIABLE, VARIABLES_JUNTAS,
+             ASIGNACION_DEFINICION, OPERACIONES_BINARIAS,
+             OPERACIONES_UNARIAS, EXPRESION_NUMERICA, 
+             EXPRESION, EXPRESION_IZQUIERDA,
+             OPERACIONES_CONDICIONALES, EXPRESION_PRIMA,
+             SENTENCIA_IF, BLOQUE_IF, BLOQUE_ELIF,
+             SENTENCIA_WHILE, SENTENCIA_FOR, EXPRESION_PRINCIPAL,
+             BLOQUE_PRINCIPAL, ASIGNACIONES_CONTROL, ASIGNACION_PRINCIPAL,
+             SENTENCIA_LLAMADA, PARAMETROS, PARAMETROS_AUX,
+             TIPOS_PARAMETROS, PARAMETROS_EXPRESIONES, PARAMETROS_EXPRESIONES_AUX,
+             PARAMETROS_SENTENCIA_LLAMADA, EXPRESION_BLOQUE, OPCIONES_IF,
+             OPCIONES_ELIF, SENTENCIA_TRY_EXCEPT, SENTENCIA_EXCEPT,
+             SENTENCIA_FINALLY, FINALLY_AUX, OPCIONES_EXCEPT,
+             FUNCION_PRINT, FUNCION_PRINT_AUX, EXPRESION_PRINT,
+             EXPRESION_CASCADA, FUNCION_INPUT, FUNCION_INPUT_AUX, EXPRESION_INPUT,
+             DECLARACION_FUNCIONES, DECLARACION_FUNCIONES_AUX, DECLARACION_PARAMETROS,
+             DECLARACION_PARAMETROS_AUX, DECLARACION_VARIABLE_FUNCION,
+             VARIAS_FUNCIONES,DECLARACION_CLASE, OPCIONES_LLAMADA,
+             LISTAS, LISTAS_PARAMETROS, IGUALES, EXPRESION_INPUT_RETURN,FOR_AUX;
+
+precedence left identificador, parentesis_abre, parentesis_cierra, 
+                potencia, multiplicacion, division, 
+                division_doble, modulo, suma, 
+                resta, igual;
+ 
+precedence left decimal_literal, decimal_long, hexa_literal, 
+                hexa_long, octal_literal, octal_long, 
+                binario_literal, binario_long, flotante_literal, 
+                double_literal;
+
+precedence left if_, elif, else_;
+
+precedence left dos_puntos, punto_coma, salto_linea;
+
+
+/* GRAMATICA PRINCIPAL */
+
+start with INICIO ;
+
+INICIO ::= DECLARACION_CLASE EXPRESION_BLOQUE | DECLARACION_FUNCIONES DECLARACION_VARIABLES EXPRESION_BLOQUE ;
+
+EXPRESION_BLOQUE ::= BLOQUE_PRINCIPAL ;
+
+EXPRESION_PRINCIPAL ::= SENTENCIA_IF | SENTENCIA_WHILE | SENTENCIA_FOR | SENTENCIA_TRY_EXCEPT;
+
+/* Declaración de variables */
+DECLARACION_VARIABLES ::= VARIABLE DECLARACION_VARIABLES | ;
+VARIABLE ::= TIPOS identificador VARIABLES_JUNTAS ASIGNACION_DEFINICION salto_linea | error salto_linea;
+VARIABLES_JUNTAS ::= coma identificador VARIABLES_JUNTAS | ; 
+ASIGNACION_DEFINICION ::= igual EXPRESION | ;
+TIPOS ::= int_ |float_ | boolean_ | string | char_ | list;
+
+/* Expresiones - ERRORES: Si viene algo después del paréntesis de cierre - Si viene unaria y luego otra cosa */
+EXPRESION ::= EXPRESION_IZQUIERDA EXPRESION_PRIMA
+              | OPERACIONES_UNARIAS EXPRESION_IZQUIERDA EXPRESION_PRIMA
+              | parentesis_abre EXPRESION parentesis_cierra EXPRESION_PRIMA;
+
+EXPRESION_PRIMA ::= OPERACIONES_BINARIAS EXPRESION | OPERACIONES_CONDICIONALES EXPRESION | ;
+
+EXPRESION_IZQUIERDA ::= EXPRESION_NUMERICA | identificador | true_ | false_ | break_ | continue_ | string_literal | LISTAS | SENTENCIA_LLAMADA | FUNCION_PRINT | FUNCION_INPUT ; /* Acepta cualquier vara en los bloques, lo cual también hace Python */
+
+EXPRESION_NUMERICA ::= decimal_literal | decimal_long | hexa_literal | hexa_long | octal_literal |
+                       octal_long | binario_literal | binario_long | flotante_literal | double_literal;
+
+OPERACIONES_BINARIAS ::= multiplicacion | division | division_doble | modulo | potencia | suma | resta;
+OPERACIONES_UNARIAS ::= suma | resta | not;
+OPERACIONES_CONDICIONALES ::= ampersand | pipe | circunflejo | not_igual | menor_mayor | mayor | menor_ | mayor_igual | menor_igual | igual_igual | and | or ;
+
+/* Listas */
+LISTAS ::= LISTAS_PARAMETROS ;
+LISTAS_PARAMETROS ::= cuadrado_abre EXPRESION PARAMETROS_EXPRESIONES_AUX cuadrado_cierra | cuadrado_abre cuadrado_cierra ;
+
+/* Sentencia IF */
+SENTENCIA_IF ::= if_ parentesis_abre EXPRESION parentesis_cierra dos_puntos BLOQUE_PRINCIPAL punto_coma salto_linea OPCIONES_IF | if_ error punto_coma ;
+BLOQUE_IF ::= elif parentesis_abre EXPRESION parentesis_cierra dos_puntos BLOQUE_PRINCIPAL punto_coma OPCIONES_ELIF | else_ dos_puntos BLOQUE_PRINCIPAL punto_coma BLOQUE_PRINCIPAL;
+OPCIONES_IF ::= BLOQUE_IF | BLOQUE_PRINCIPAL;
+OPCIONES_ELIF ::= BLOQUE_IF | ;
+
+/* Sentencia Llamada */
+SENTENCIA_LLAMADA ::= OPCIONES_LLAMADA PARAMETROS_EXPRESIONES ;
+OPCIONES_LLAMADA ::= identificador punto identificador | identificador ;
+PARAMETROS_EXPRESIONES ::= parentesis_abre EXPRESION PARAMETROS_EXPRESIONES_AUX parentesis_cierra | parentesis_abre parentesis_cierra;
+PARAMETROS_EXPRESIONES_AUX ::= coma EXPRESION PARAMETROS_EXPRESIONES_AUX | ;
+
+/* Sentencia While */
+SENTENCIA_WHILE ::= while_ parentesis_abre EXPRESION parentesis_cierra dos_puntos BLOQUE_PRINCIPAL punto_coma BLOQUE_PRINCIPAL;
+
+/* Sentencia For */
+SENTENCIA_FOR ::= for_ identificador in range parentesis_abre EXPRESION FOR_AUX parentesis_cierra dos_puntos BLOQUE_PRINCIPAL punto_coma BLOQUE_PRINCIPAL;
+FOR_AUX ::= coma EXPRESION | ;
+
+/* Sentencia Try Except */
+SENTENCIA_TRY_EXCEPT ::=  try_ dos_puntos BLOQUE_PRINCIPAL punto_coma SENTENCIA_EXCEPT;
+SENTENCIA_EXCEPT ::= except identificador dos_puntos BLOQUE_PRINCIPAL punto_coma OPCIONES_EXCEPT;
+SENTENCIA_FINALLY ::= finally_ dos_puntos BLOQUE_PRINCIPAL punto_coma BLOQUE_PRINCIPAL;
+OPCIONES_EXCEPT ::= SENTENCIA_FINALLY | BLOQUE_PRINCIPAL;
+
+/* Funcion Print */
+FUNCION_PRINT ::= print_ FUNCION_PRINT_AUX ;
+FUNCION_PRINT_AUX ::= parentesis_abre  EXPRESION_PRINT parentesis_cierra | parentesis_abre  parentesis_cierra;
+EXPRESION_PRINT ::=  EXPRESION | EXPRESION_CASCADA ;
+EXPRESION_CASCADA ::= EXPRESION coma EXPRESION_PRINT ;
+
+/* Funcion Input */
+EXPRESION_INPUT_RETURN ::= input | return_ ;
+FUNCION_INPUT ::= EXPRESION_INPUT_RETURN FUNCION_INPUT_AUX ; 
+FUNCION_INPUT_AUX ::= parentesis_abre EXPRESION_INPUT parentesis_cierra;
+EXPRESION_INPUT ::= EXPRESION | ;
+
+/* Declaración Función */
+DECLARACION_FUNCIONES ::= def identificador parentesis_abre DECLARACION_FUNCIONES_AUX parentesis_cierra dos_puntos DECLARACION_VARIABLES BLOQUE_PRINCIPAL punto_coma salto_linea DECLARACION_FUNCIONES | salto_linea | ;
+DECLARACION_FUNCIONES_AUX ::= | DECLARACION_PARAMETROS;
+DECLARACION_PARAMETROS ::=   DECLARACION_PARAMETROS_AUX | DECLARACION_VARIABLE_FUNCION ; 
+DECLARACION_PARAMETROS_AUX ::= DECLARACION_VARIABLE_FUNCION coma DECLARACION_PARAMETROS ;
+DECLARACION_VARIABLE_FUNCION ::= TIPOS identificador ;
+
+/* DECLARACION DE CLASES*/
+DECLARACION_CLASE ::= class_ identificador dos_puntos DECLARACION_VARIABLES DECLARACION_FUNCIONES BLOQUE_PRINCIPAL punto_coma salto_linea;
+
+/* Bloque Principal */
+BLOQUE_PRINCIPAL ::= identificador IGUALES EXPRESION salto_linea BLOQUE_PRINCIPAL | EXPRESION salto_linea BLOQUE_PRINCIPAL | EXPRESION_PRINCIPAL salto_linea BLOQUE_PRINCIPAL | identificador error salto_linea BLOQUE_PRINCIPAL | EXPRESION error salto_linea BLOQUE_PRINCIPAL | EXPRESION_PRINCIPAL error salto_linea BLOQUE_PRINCIPAL | ;
+IGUALES ::= igual | mas_igual | menos_igual | multiplicacion_igual |  division_igual | potencia_igual | division_doble_igual ;
+
+/* Con el bloque de esta manera, se va a animadar el salto_linea linealmente con cada bloque principal que se escriba en el código */
