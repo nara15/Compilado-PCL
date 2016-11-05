@@ -1,0 +1,53 @@
+package logica.parser;
+
+import java_cup.runtime.*;
+
+parser code{:
+	
+	public void report_fatal_error(String message, Object info) {
+		System.err.println("Error fatal. Imposible recuperarse.\n");
+	}
+        
+        public void unrecovered_syntax_error(Symbol cur_token) {
+        
+        }
+	
+        public void syntax_error(Symbol st) {
+       
+    	report_error("Syntax Error: "+ st.value + ". Linea: " + st.left + ". Columna: " + st.right + ". \n ", null);
+    }
+:}
+
+/* TERMINALES O TOKENS ********************************************************/
+
+terminal PROGRAM,VAR, INT, LONGINT, SHORTINT,
+         CHAR, STRING, BOOLEAN, REAL,
+         ID, PUNTO_COMA, DOS_PUNTO, BEGIN, END, COMA;
+
+
+/* NO TERMINALES **************************************************************/
+
+non terminal inicio, inicio_programa, bloque_programa, declaraciones, 
+             declaracion, variables, tipo, vardec;
+
+
+
+/* GRAMÁTICA ******************************************************************/
+
+start with inicio ;
+
+inicio ::= inicio_programa;
+
+inicio_programa ::= PROGRAM bloque_programa;
+
+bloque_programa ::= declaraciones BEGIN END ;
+
+declaraciones ::= declaracion | declaracion PUNTO_COMA declaraciones | ;
+
+declaracion ::= vardec;
+
+vardec ::= VAR variables DOS_PUNTO tipo ;
+
+variables ::= ID | ID COMA variables ;
+
+tipo ::= STRING ;

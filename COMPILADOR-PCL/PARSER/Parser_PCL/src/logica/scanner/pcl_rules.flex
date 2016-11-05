@@ -79,7 +79,7 @@ BLANCO = [\n| |\t|\r]
     */
     "AND"        { return token(1200, yytext()); }
     "ARRAY"      { return token(1200, yytext()); }
-    "BEGIN"      { return token(1200, yytext()); }
+    "BEGIN"      { return token(sym.BEGIN, yytext()); }
     "BOOLEAN"    { return token(sym.BOOLEAN, yytext()); }
     "BYTE"       { return token(1200, yytext());}
     "CASE"       { return token(1200, yytext());}
@@ -89,7 +89,7 @@ BLANCO = [\n| |\t|\r]
     "DO"         { return token(1200, yytext());}
     "DOWNTO"     { return token(1200, yytext());}
     "ELSE"       { return token(1200, yytext());}
-    "END"        { return token(1200, yytext());}
+    "END"        { return token(sym.END, yytext());}
     "FALSE"      { return token(1200, yytext());}
     "FOR"        { return token(1200, yytext());}
     "FORWARD"    { return token(1200, yytext());}
@@ -108,7 +108,7 @@ BLANCO = [\n| |\t|\r]
     "OR"         { return token(1200, yytext());}
     "PACKED"     { return token(1200, yytext());}
     "PROCEDURE"  { return token(1200, yytext());}
-    "PROGRAM"    { return token(1200, yytext());}
+    "PROGRAM"    { return token(sym.PROGRAM, yytext());}
     "READ"       { return token(1200, yytext());}
     "REAL"       { return token(sym.BOOLEAN, yytext());}
     "RECORD"     { return token(1200, yytext());}
@@ -133,33 +133,33 @@ BLANCO = [\n| |\t|\r]
     
     ","          { return token(sym.COMA, yytext());}
     ";"          { return token(sym.PUNTO_COMA, yytext());}
-    "++"         { return token(sym.OP_INC, yytext());}
-    "--"         { return token(sym.OP_DEC, yytext());}
-    ">="         { return token(sym.OP_MAYOR_IGUAL, yytext());}
-    ">"          { return token(sym.OP_MAYOR, yytext());}
-    "<="         { return token(sym.OP_MENOR_IGUAL, yytext());}
-    "<"          { return token(sym.OP_MENOR, yytext());}
-    "<>"         { return token(sym.OP_DISTINTO, yytext());}
-    "="          { return token(sym.OP_IGUAL, yytext());}
-    "+"          { return token(sym.OP_SUMA, yytext());}
-    "-"          { return token(sym.OP_RESTA, yytext());}
-    "*"          { return token(sym.OP_MULTIPLICACION, yytext());}
-    "/"          { return token(sym.OP_DIVISION, yytext());}
-    "("          { return token(sym.PAR_APER, yytext());}
-    ")"          { return token(sym.PAR_CERR, yytext());}
-    "["          { return token(sym.BRA_APER, yytext());}
-    "]"          { return token(sym.BRA_CERR, yytext());}
-    ":="         { return token(sym.ASIGN, yytext());}
-    "."          { return token(sym.PUNTO, yytext());}
+    "++"         { return token(3000, yytext());}
+    "--"         { return token(3000, yytext());}
+    ">="         { return token(3000, yytext());}
+    ">"          { return token(3000, yytext());}
+    "<="         { return token(3000, yytext());}
+    "<"          { return token(3000, yytext());}
+    "<>"         { return token(3000, yytext());}
+    "="          { return token(3000, yytext());}
+    "+"          { return token(3000, yytext());}
+    "-"          { return token(3000, yytext());}
+    "*"          { return token(3000, yytext());}
+    "/"          { return token(3000, yytext());}
+    "("          { return token(3000, yytext());}
+    ")"          { return token(3000, yytext());}
+    "["          { return token(3000, yytext());}
+    "]"          { return token(3000, yytext());}
+    ":="         { return token(3000, yytext());}
+    "."          { return token(3000, yytext());}
     ":"          { return token(sym.DOS_PUNTO, yytext());}
-    "+="         { return token(sym.OP_SUMA_ASIGN, yytext());}
-    "-="         { return token(sym.OP_RESTA_ASIGN, yytext());}
-    "*="         { return token(sym.OP_MUL_ASIGN, yytext());}
-    "/="         { return token(sym.OP_DIV_ASIGN, yytext());}
-    ">>"         { return token(sym.OP_SHIFT_DER, yytext());}
-    "<<"         { return token(sym.OP_SHIFT_IZQ, yytext());}
-    "<<="        { return token(sym.OP_SHIFT_IZQ_ASIGN, yytext());}
-    ">>="        { return token(sym.OP_SHIFT_DER_ASIGN, yytext());}
+    "+="         { return token(3000, yytext());}
+    "-="         { return token(3000, yytext());}
+    "*="         { return token(3000, yytext());}
+    "/="         { return token(3000, yytext());}
+    ">>"         { return token(3000, yytext());}
+    "<<"         { return token(3000, yytext());}
+    "<<="        { return token(3000, yytext());}
+    ">>="        { return token(3000, yytext());}
     
 }
 
@@ -167,18 +167,18 @@ BLANCO = [\n| |\t|\r]
     /**
     * LITERALES
     */
-{ENTERO}                { return token(sym.ENTERO, yytext()); }
-{FLOTANTE}              { return token(sym.FLOTANTE, yytext());}
-{NOTA_CIENTIFICA}       { return token(sym.NOTA_CIENTIFICA, yytext());}
-{STRINGCHARACTER}       { return token(sym.STRING_C, yytext());}
-{CHARACTER}             { return token(sym.CHARACTER, yytext());}
+{ENTERO}                { return token(4000, yytext()); }
+{FLOTANTE}              { return token(4000, yytext());}
+{NOTA_CIENTIFICA}       { return token(4000, yytext());}
+{STRINGCHARACTER}       { return token(4000, yytext());}
+{CHARACTER}             { return token(4000, yytext());}
 {ID}                    { return token(sym.ID, yytext().toUpperCase());}
     /**
     * COMENTARIOS
     */
-{COMMENT_BODY}          { return token(sym.COMMENT, yytext());}
-{COMMENT_LINE}          { return token(sym.COMMENT, yytext());}
-{COMMEN_BODY_BRACKETS}  { return token(sym.COMMENT, yytext());}
+{COMMENT_BODY}          { return token(5000, yytext());}
+{COMMENT_LINE}          { return token(5000, yytext());}
+{COMMEN_BODY_BRACKETS}  { return token(5000, yytext());}
     /**
     * ERRORES CONOCIDOS
     */

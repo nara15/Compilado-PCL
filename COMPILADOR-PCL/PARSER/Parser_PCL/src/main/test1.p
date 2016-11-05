@@ -1,0 +1,5 @@
+PROGRAM 
+    VAR a,b : STRING;
+    VAR j : STRING;
+BEGIN 
+END

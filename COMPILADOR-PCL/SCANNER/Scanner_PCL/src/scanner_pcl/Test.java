@@ -40,19 +40,19 @@ public class Test {
             for (symbol = s.next_token(); symbol.sym != 0; symbol = s.next_token())
             {
                
-                if (symbol.sym == symbols.sym.ERROR_LEXICO)
-                {
-                    System.out.println(symbol.value + " " + (symbol.left + 1));
-                }
-                else
-                {
-                    //System.out.println(symbol.value + " ---------------- " + symbol.sym);
+//                if (symbol.sym == symbols.sym.ERROR_LEXICO)
+//                {
+//                    System.out.println(symbol.value + " " + (symbol.left + 1));
+//                }
+//                else
+//                {
+//                    System.out.println(symbol.value + " ---------------- " + symbol.sym);
 //                    if (symbol.sym == symbols.sym.COMMENT)
 //                    {
 //                        System.out.println(symbol.value + " ---------------- " + symbol.sym);
 //                    }
-                     
-                }
+                   System.out.println(symbol.value + " ---------------- " + symbol.sym);  
+//                }
 
             }
             
