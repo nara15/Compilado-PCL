@@ -8,6 +8,7 @@ package main;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.parser.Parser;
@@ -20,10 +21,9 @@ import logica.scanner.Scanner;
  */
 public class Parser_Main {
     
-     private static final String pPath = "G:\\git\\Compilador-PCL\\COMPILADOR-PCL\\PARSER\\Parser_PCL\\src\\main\\test1.p";
-    /**
-     * @param args the command line arguments
-     */
+    private static final String pFileName = "test2.p";
+    private static final String pPath = Paths.get("").toAbsolutePath().toString() + "\\src\\main\\" + pFileName;
+    
     public static void main(String[] args) 
     {
         BufferedReader br;
