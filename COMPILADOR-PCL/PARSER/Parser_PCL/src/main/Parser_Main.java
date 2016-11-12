@@ -14,15 +14,13 @@ import logica.parser.Parser;
 import logica.scanner.Scanner;
 
 
-
-
 /**
  *
- * @author jonaranjo
+ * @author José Mario Naranjo Leiva
  */
 public class Parser_Main {
     
-     private static final String pPath = "M:\\Github\\Compilador-PCL\\COMPILADOR-PCL\\PARSER\\Parser_PCL\\src\\main\\test1.p";
+     private static final String pPath = "G:\\git\\Compilador-PCL\\COMPILADOR-PCL\\PARSER\\Parser_PCL\\src\\main\\test1.p";
     /**
      * @param args the command line arguments
      */

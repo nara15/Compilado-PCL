@@ -22,7 +22,7 @@ public class Generacion
         
         gen = new Parser_Generador();
         
-        gen.generar("/src/logica/parser/", "pcl.cup");
+        gen.generar("/src/logica/parser/", "pcl_v2.cup");
     }
     
 }

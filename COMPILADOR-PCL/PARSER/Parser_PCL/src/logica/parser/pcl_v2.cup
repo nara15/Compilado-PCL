@@ -1,0 +1,190 @@
+package logica.parser;
+
+import java_cup.runtime.*;
+
+parser code{:
+	
+    public void report_fatal_error(String message, Object info)
+    {
+        System.err.println("Error fatal. Imposible recuperarse.\n");
+    }
+
+    public void unrecovered_syntax_error(Symbol cur_token) {}
+	
+    public void syntax_error(Symbol st)
+    {
+        report_error("Syntax Error: "+ st.value + ". Linea: " + st.left + ". Columna: " + st.right + ". \n ", null);
+    }
+:}
+
+/* TERMINALES O TOKENS ********************************************************/
+
+// Palabras reservadas ---------------------------------------------------------
+
+terminal _program, _var, _string, _begin, _end, _if, _repeat, _else, _const,
+         _case, _of, _until, _function, _procedure, _then,  _to, _for, _do, _while,
+         _array;
+
+// Tipos de datos --------------------------------------------------------------
+
+terminal _int, _longint, _shortint,_char, _boolean, _real, _entero,_hilera, 
+         _caracter, _flotante,_true, _false ;
+
+// Operador y caracteres especiales --------------------------------------------
+
+terminal _igual, _parentesisAbre, _parentesisCierra, _dos_puntos, _punto_coma,
+         _coma, _bra_aper, _bra_cerr, _punto, _rango_dos_puntos ;
+
+// Operadores ------------------------------------------------------------------
+
+terminal _op_suma, _op_mas_igual, _op_menos_igual, _op_div_igual, _op_mult_igual,
+         _asignacion, _op_resta , _op_multi , _op_division , _op_mod , _op_DIV ;
+
+// Funciones e identificadores -------------------------------------------------
+
+terminal _id, _write, _read ;
+
+// FIN DE TERMINALES -----------------------------------------------------------
+
+/* NO TERMINALES **************************************************************/
+
+non terminal INICIO_PROGRAMA, BLOQUE_PROGRAMA ;
+
+non terminal DECLARACIONES, BLOQUE_DECLARACION_VARIABLES, 
+             BLOQUE_DECLARACION_CONSTANTES, DECLARACION_VARIABLES,
+             DECLARACION_CONSTANTES,DECLARACION_ID_CONSECUTIVO;
+
+non terminal DECLARACIONES_FUNC_PROC, FUNCION_O_PROCEDIMIENTO,
+             DECLARACION_FUNCION, DECLARACION_PROCEDIMIENTO, 
+             ESTRUCTURA_FUNCION, ESTRUCTURA_PROCEDIMIENTO,PARAMETROS ,                
+             PARAMETROS_Aux, PARAMETROS_Aux2;
+
+non terminal CUERPO_INSTRUCCIONES, SENTENCIA, INSTRUCCION, ASIGNACION ;
+
+non terminal LITERAL,VARIABLE, CONSTANTE,TIPO_DATO, TIPO_COMPUESTO, 
+             TIPO_SIMPLE ;
+         
+non terminal ESTRUCTURA_CONTROL, SENTENCIA_IF, SENTENCIA_REPEAT, 
+             SENTENCIA_CASE,CASE,CASES, CONSTANTE_CASE,LITERAL_CASE,
+             FUNCION_WRITE, FUNCION_READ, FUNCION_READ_AUX, PARAMETROS_WRITE, 
+             CONTENIDO_WRITE,BLOQUE_IF, BLOQUE_ELSE, CONDICION,INICIO_FOR, 
+             BLOQUE_FOR,INICIO_WHILE, BLOQUE_WHILE;
+
+non terminal EXPRESION, EXPRESION_UNARIA, EXPRESION_COMPUESTA, EXPRESION_BINARIA,
+             EXPRESION_BASE,EXPRESION_CONDICION, BOOL_CONST;
+
+non terminal OPERADOR_ARITMETICO, OPERADOR_ARITMETICO_ASIGN ;
+
+precedence left _dos_puntos, _punto_coma, _if, _repeat, _case, _write, _read ;
+
+precedence left _hilera , _caracter , _entero , _else, _for, _while;
+
+precedence left _id ; //precedencia para las asignaciones 
+
+precedence left _op_suma, _op_resta , _op_multi , _op_division , _op_mod , _op_DIV;
+
+/* GRAMÁTICA ******************************************************************/
+
+start with INICIO_PROGRAMA;
+
+INICIO_PROGRAMA                   ::= _program BLOQUE_PROGRAMA;
+BLOQUE_PROGRAMA                   ::= DECLARACIONES _begin CUERPO_INSTRUCCIONES _end ;
+DECLARACIONES                     ::= BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES DECLARACIONES_FUNC_PROC ;
+
+/* Declaración de Variables --------------------------------------------------*/
+
+BLOQUE_DECLARACION_VARIABLES      ::= _var DECLARACION_VARIABLES | ;
+DECLARACION_VARIABLES             ::= VARIABLE | VARIABLE DECLARACION_VARIABLES ;
+VARIABLE                          ::= _id DECLARACION_ID_CONSECUTIVO _dos_puntos TIPO_DATO _punto_coma  ;
+DECLARACION_ID_CONSECUTIVO        ::= _coma _id DECLARACION_ID_CONSECUTIVO | ;
+
+/* Declaración de Constantes -------------------------------------------------*/
+
+BLOQUE_DECLARACION_CONSTANTES     ::= _const DECLARACION_CONSTANTES | ;
+DECLARACION_CONSTANTES            ::= CONSTANTE | CONSTANTE DECLARACION_CONSTANTES ;
+CONSTANTE                         ::= _id _igual LITERAL_CASE _punto_coma ;
+LITERAL_CASE                      ::= _entero | _hilera ;
+
+/* Declaración de funciones y procedimientos ---------------------------------*/
+
+DECLARACIONES_FUNC_PROC           ::= FUNCION_O_PROCEDIMIENTO DECLARACIONES_FUNC_PROC |;
+FUNCION_O_PROCEDIMIENTO           ::= DECLARACION_FUNCION | DECLARACION_PROCEDIMIENTO;
+
+DECLARACION_FUNCION               ::= _function _id _parentesisAbre PARAMETROS _parentesisCierra _dos_puntos TIPO_DATO ESTRUCTURA_FUNCION ;
+DECLARACION_PROCEDIMIENTO         ::= _procedure _id _parentesisAbre PARAMETROS _parentesisCierra ESTRUCTURA_PROCEDIMIENTO ;
+
+ESTRUCTURA_FUNCION                ::= _begin BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES CUERPO_INSTRUCCIONES _end ;
+ESTRUCTURA_PROCEDIMIENTO          ::= _begin BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES CUERPO_INSTRUCCIONES _end ;
+
+PARAMETROS                        ::=   PARAMETROS_Aux |;
+PARAMETROS_Aux                    ::=   TIPO_DATO _id PARAMETROS_Aux2;
+PARAMETROS_Aux2                   ::=   _coma PARAMETROS_Aux |;
+
+/* Sentencias ----------------------------------------------------------------*/
+
+CUERPO_INSTRUCCIONES              ::= SENTENCIA CUERPO_INSTRUCCIONES |  ;
+SENTENCIA                         ::= ESTRUCTURA_CONTROL | INSTRUCCION _punto_coma  ;
+INSTRUCCION                       ::= FUNCION_READ | FUNCION_WRITE | ASIGNACION ;
+ESTRUCTURA_CONTROL                ::= SENTENCIA_IF | SENTENCIA_REPEAT | SENTENCIA_CASE | INICIO_FOR | INICIO_WHILE;
+
+/* Sentencia IF ---------------------------------------------------------------*/
+
+SENTENCIA_IF                      ::= _if _parentesisAbre CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE;
+CONDICION                         ::= _id ;
+BLOQUE_IF                         ::= _begin CUERPO_INSTRUCCIONES _end ;
+BLOQUE_ELSE                       ::= _else _begin CUERPO_INSTRUCCIONES _end | ;
+
+/* Sentencias FOR ------------------------------------------------------------*/
+
+INICIO_FOR                        ::= _for _id _asignacion _id _to _id _do BLOQUE_FOR ;
+BLOQUE_FOR                        ::= _begin CUERPO_INSTRUCCIONES _end;
+
+/* Sentencias WHILE ----------------------------------------------------------*/
+
+INICIO_WHILE                      ::= _while _id _do BLOQUE_WHILE ;
+BLOQUE_WHILE                      ::= _begin CUERPO_INSTRUCCIONES _end;
+
+/* Sentencias REPEAT ---------------------------------------------------------*/
+
+SENTENCIA_REPEAT                  ::= _repeat CUERPO_INSTRUCCIONES _until EXPRESION_CONDICION ;
+
+/* Sentencias CASE -----------------------------------------------------------*/
+
+SENTENCIA_CASE                    ::= _case _id _of CASES  ;
+CASES                             ::= CASE CUERPO_INSTRUCCIONES | CASE CUERPO_INSTRUCCIONES CASES ;
+CASE                              ::= CONSTANTE_CASE _dos_puntos | _else _dos_puntos;
+CONSTANTE_CASE                    ::= _hilera | _caracter | _entero;
+
+/* FUNCIONES READ Y WRITE ----------------------------------------------------*/
+
+FUNCION_READ           ::= _read FUNCION_READ_AUX;
+FUNCION_READ_AUX       ::= _parentesisAbre _parentesisCierra | _parentesisAbre _id _parentesisCierra;
+
+FUNCION_WRITE          ::= _write _parentesisAbre PARAMETROS_WRITE _parentesisCierra;
+PARAMETROS_WRITE       ::= CONTENIDO_WRITE | CONTENIDO_WRITE _coma PARAMETROS_WRITE ;
+CONTENIDO_WRITE        ::= _id | _hilera;
+
+/* ASIGNACIÓN ----------------------------------------------------------------*/
+
+ASIGNACION             ::= _id  OPERADOR_ARITMETICO_ASIGN EXPRESION ;
+
+/* EXPRESIONES ---------------------------------------------------------------*/
+
+EXPRESION              ::= EXPRESION_BASE | EXPRESION_BINARIA | EXPRESION_COMPUESTA ;
+EXPRESION_COMPUESTA    ::= _parentesisAbre EXPRESION _parentesisCierra ;
+EXPRESION_BINARIA      ::= EXPRESION OPERADOR_ARITMETICO EXPRESION ;
+EXPRESION_BASE         ::= _id | LITERAL ;
+EXPRESION_CONDICION    ::= EXPRESION ;
+
+
+OPERADOR_ARITMETICO          ::= _op_suma | _op_resta | _op_multi | _op_division | _op_mod | _op_DIV  ;
+OPERADOR_ARITMETICO_ASIGN    ::= _op_mas_igual | _op_menos_igual | _op_div_igual | _op_mult_igual | _asignacion  ;
+
+
+/* TIPOS, LITERALES Y ESTRUCTURAS ---------------------------------------------*/
+
+TIPO_DATO              ::= TIPO_COMPUESTO | TIPO_SIMPLE ;
+TIPO_COMPUESTO         ::=  _array _bra_aper _entero _rango_dos_puntos _entero _bra_cerr _of TIPO_DATO ;
+TIPO_SIMPLE            ::= _string | _int | _boolean | _char | _longint | _shortint | _real ;
+
+LITERAL                ::= _entero | _hilera | _true | _false | _flotante | _caracter ;
