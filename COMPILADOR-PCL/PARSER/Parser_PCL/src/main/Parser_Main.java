@@ -19,7 +19,8 @@ import logica.scanner.Scanner;
  *
  * @author José Mario Naranjo Leiva
  */
-public class Parser_Main {
+public class Parser_Main
+{
     
     private static final String pFileName = "test2.p";
     private static final String pPath = Paths.get("").toAbsolutePath().toString() + "\\src\\main\\" + pFileName;

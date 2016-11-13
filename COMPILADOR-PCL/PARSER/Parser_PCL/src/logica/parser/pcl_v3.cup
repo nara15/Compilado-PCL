@@ -11,12 +11,15 @@ parser code{:
     
     public void unrecovered_syntax_error(Symbol cur_token) {}
 	
-    public void syntax_error(Symbol st){}
-    public void syntax_error_1(Object st, String msg)
+    public void syntax_error(Symbol st)
     {
-        System.out.println(this.cur_token.left + " " + this.cur_token.right + " " + this.cur_token.value);
-        System.out.println(msg);
-        //report_error("Syntax Error: "+ st.value + ". Linea: " + st.left + ". Columna: " + st.right + ". \n ", null);
+        report_error("Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right, null);
+    }
+
+
+    public void errorMensaje(String msg)
+    {
+        System.err.println(msg);
     }
 
 :}
@@ -106,7 +109,7 @@ DECLARACION_ID_CONSECUTIVO        ::= _coma _id DECLARACION_ID_CONSECUTIVO |  ;
 
 BLOQUE_DECLARACION_CONSTANTES     ::= _const DECLARACION_CONSTANTES | ;
 DECLARACION_CONSTANTES            ::= CONSTANTE | CONSTANTE DECLARACION_CONSTANTES ;
-CONSTANTE                         ::= _id _igual LITERAL_CASE _punto_coma |  _id error:e {:parser.syntax_error_1(e,"Lo declaró mal tonto");:} LITERAL_CASE _punto_coma | _id _igual error _punto_coma;
+CONSTANTE                         ::= _id _igual LITERAL_CASE _punto_coma |  _id error:e {:parser.errorMensaje("Lo declaró mal tonto");:} LITERAL_CASE _punto_coma | _id _igual error _punto_coma;
 LITERAL_CASE                      ::= _entero | _hilera | _flotante ;
 
 /* Declaración de funciones y procedimientos ---------------------------------*/
@@ -133,7 +136,8 @@ ESTRUCTURA_CONTROL                ::= SENTENCIA_IF | SENTENCIA_REPEAT | SENTENCI
 
 /* Sentencia IF ---------------------------------------------------------------*/
 
-SENTENCIA_IF                      ::= _if _parentesisAbre CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE | _if error {:parser.syntax_error_1(null,"Hace falta (");:} CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE;
+SENTENCIA_IF                      ::= _if _parentesisAbre CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE 
+                                      |_if _parentesisAbre error:e {:parser.errorMensaje("Hay algo en el if");:} _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE;
 CONDICION                         ::= _id ;
 BLOQUE_IF                         ::= _begin CUERPO_INSTRUCCIONES _end ;
 BLOQUE_ELSE                       ::= _else _begin CUERPO_INSTRUCCIONES _end | ;

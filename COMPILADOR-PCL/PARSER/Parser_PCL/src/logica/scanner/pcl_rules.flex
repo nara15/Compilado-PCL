@@ -6,10 +6,17 @@ import logica.parser.sym;
 %%
 
 %{
-private Symbol token(int type, Object value)
-{
-    return new Symbol(type, yyline + 1, yycolumn + 1, value);
-}
+    private Symbol token(int type, Object value)
+    {
+        return new Symbol(type, yyline + 1, yycolumn + 1, value);
+    }
+    
+    public String current_lexeme()
+    {
+        int l = yyline+1;
+        int c = yycolumn+1;
+        return " (line: "+l+" , column: "+c+" , lexeme: '"+yytext()+"')";
+    }
 %}
 
 %public
@@ -176,9 +183,9 @@ BLANCO = [\n| |\t|\r]
     /**
     * COMENTARIOS
     */
-{COMMENT_BODY}          { return token(5000, yytext());}
-{COMMENT_LINE}          { return token(5000, yytext());}
-{COMMEN_BODY_BRACKETS}  { return token(5000, yytext());}
+{COMMENT_BODY}          { }
+{COMMENT_LINE}          { }
+{COMMEN_BODY_BRACKETS}  { }
     /**
     * ERRORES CONOCIDOS
     */
