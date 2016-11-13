@@ -24,6 +24,7 @@ import logica.parser.sym;
 %cup
 %line
 %column
+%ignorecase
 
 /**
 *   COMENTARIOS DEL LENGUAJE ---------------------------------------------------

@@ -1,8 +1,8 @@
 PROGRAM 
     VAR
-    a,b,c,d: INT;
-    j : STRING;
-    //jose, mario  STRING;
+    a,b,c,d: int;
+    j : string;
+    //jose, mario  STRING; este es un comentario
     nombres: ARRAY [1 .. 100] OF STRING;
     
     CONST
@@ -26,13 +26,13 @@ PROGRAM
     
 BEGIN 
 
-    IF (hola) THEN
+    IF (q<7) THEN
         BEGIN
             WRITE("Hola");
         END
     ELSE
         BEGIN
-            IF (hola) THEN
+            IF (a = 2) THEN
             BEGIN
                 WRITE("Hola otra vez");
             END
@@ -40,11 +40,11 @@ BEGIN
         
     FOR i:=1 TO 10 DO
         BEGIN
-            IF (hola) THEN
+            IF (saludo = "hola") THEN
             BEGIN
                 WRITE("Hola");
                 
-                WHILE hola DO
+                WHILE hola <= 3 DO
                     BEGIN
                         READ(a);
                         WRITE("HOLA:", a);
@@ -52,7 +52,7 @@ BEGIN
             END
             ELSE
                 BEGIN
-                    IF (hola) THEN
+                    IF (hola < (123 + 78 + saludo)) THEN
                     BEGIN
                         WRITE("Hola otra vez");
                     END
@@ -75,7 +75,7 @@ BEGIN
         
     a := ((2 + 2) + (2 + b));
     b := 5*(6-3)+1;
-    READ (a);
+    read (a);
     WRITE("Hola: ", jose, a, b);
    
 END

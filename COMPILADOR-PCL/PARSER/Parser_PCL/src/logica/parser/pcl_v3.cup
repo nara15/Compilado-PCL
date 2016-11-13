@@ -139,7 +139,7 @@ ESTRUCTURA_CONTROL                ::= SENTENCIA_IF | SENTENCIA_REPEAT | SENTENCI
 
 SENTENCIA_IF                      ::= _if _parentesisAbre CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE 
                                       |_if _parentesisAbre error:e {:parser.errorMensaje("Hay algo en el if");:} _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE;
-CONDICION                         ::= _id ;
+CONDICION                         ::= EXPRESION_CONDICION ;
 BLOQUE_IF                         ::= _begin CUERPO_INSTRUCCIONES _end ;
 BLOQUE_ELSE                       ::= _else _begin CUERPO_INSTRUCCIONES _end | ;
 
@@ -150,7 +150,7 @@ BLOQUE_FOR                        ::= _begin CUERPO_INSTRUCCIONES _end;
 
 /* Sentencias WHILE ----------------------------------------------------------*/
 
-INICIO_WHILE                      ::= _while _id _do BLOQUE_WHILE ;
+INICIO_WHILE                      ::= _while EXPRESION_CONDICION _do BLOQUE_WHILE ;
 BLOQUE_WHILE                      ::= _begin CUERPO_INSTRUCCIONES _end;
 
 /* Sentencias REPEAT ---------------------------------------------------------*/
