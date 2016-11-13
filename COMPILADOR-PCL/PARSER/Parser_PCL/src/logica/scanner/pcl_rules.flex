@@ -84,7 +84,7 @@ BLANCO = [\n| |\t|\r]
     /*
     * PALABRAS RESERVADAS
     */
-    "AND"        { return token(1200, yytext()); }
+    "AND"        { return token(sym._AND, yytext()); }
     "ARRAY"      { return token(sym._array, yytext()); }
     "BEGIN"      { return token(sym._begin, yytext()); }
     "BOOLEAN"    { return token(sym._boolean, yytext()); }
@@ -110,9 +110,9 @@ BLANCO = [\n| |\t|\r]
     "LONGINT"    { return token(sym._longint, yytext());}
     "MOD"        { return token(sym._op_mod , yytext());}
     "NIL"        { return token(1200, yytext());}
-    "NOT"        { return token(1200, yytext());}
+    "NOT"        { return token(sym._NOT, yytext());}
     "OF"         { return token(sym._of, yytext());}
-    "OR"         { return token(1200, yytext());}
+    "OR"         { return token(sym._OR, yytext());}
     "PACKED"     { return token(1200, yytext());}
     "PROCEDURE"  { return token(sym._procedure, yytext());}
     "PROGRAM"    { return token(sym._program, yytext());}
@@ -142,11 +142,11 @@ BLANCO = [\n| |\t|\r]
     ";"          { return token(sym._punto_coma, yytext());}
     "++"         { return token(3000, yytext());}
     "--"         { return token(3000, yytext());}
-    ">="         { return token(3000, yytext());}
-    ">"          { return token(3000, yytext());}
-    "<="         { return token(3000, yytext());}
-    "<"          { return token(3000, yytext());}
-    "<>"         { return token(3000, yytext());}
+    ">="         { return token(sym._mayor_igual, yytext());}
+    ">"          { return token(sym._mayor, yytext());}
+    "<="         { return token(sym._menor_igual, yytext());}
+    "<"          { return token(sym._menor, yytext());}
+    "<>"         { return token(sym._distinto, yytext());}
     "="          { return token(sym._igual, yytext());}
     "+"          { return token(sym._op_suma, yytext());}
     "-"          { return token(sym._op_resta, yytext());}

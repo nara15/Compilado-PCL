@@ -64,8 +64,8 @@ BEGIN
         REPEAT
             READ();
             a := 3 + 3 + 3;
-        UNTIL ((2 + 2) MOD (2 + 3)) + (3*5/5)
-    UNTIL saludar
+        UNTIL ((2 + 2) MOD (2 + 3)) + (3*5/5) = 3
+    UNTIL hola <= 2 
 
     CASE variable OF
         1 : WRITE("Hola"); 

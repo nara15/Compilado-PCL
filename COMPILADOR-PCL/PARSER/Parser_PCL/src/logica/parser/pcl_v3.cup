@@ -45,7 +45,8 @@ terminal _igual, _parentesisAbre, _parentesisCierra, _dos_puntos, _punto_coma,
 // Operadores ------------------------------------------------------------------
 
 terminal _op_suma, _op_mas_igual, _op_menos_igual, _op_div_igual, _op_mult_igual,
-         _asignacion, _op_resta , _op_multi , _op_division , _op_mod , _op_DIV ;
+         _asignacion, _op_resta , _op_multi , _op_division , _op_mod , _op_DIV,
+         _mayor_igual, _mayor, _menor_igual, _menor, _distinto, _OR, _AND, _NOT ;
 
 // Funciones e identificadores -------------------------------------------------
 
@@ -78,9 +79,9 @@ non terminal ESTRUCTURA_CONTROL, SENTENCIA_IF, SENTENCIA_REPEAT,
              BLOQUE_FOR,INICIO_WHILE, BLOQUE_WHILE;
 
 non terminal EXPRESION, EXPRESION_UNARIA, EXPRESION_COMPUESTA, EXPRESION_BINARIA,
-             EXPRESION_BASE,EXPRESION_CONDICION, BOOL_CONST;
+             EXPRESION_BASE,EXPRESION_CONDICION;
 
-non terminal OPERADOR_ARITMETICO, OPERADOR_ARITMETICO_ASIGN ;
+non terminal OPERADOR_ARITMETICO, OPERADOR_ARITMETICO_ASIGN, OPERADOR_BOOLEAN ;
 
 precedence left _dos_puntos, _punto_coma, _if, _repeat, _case, _write, _read ;
 
@@ -182,12 +183,12 @@ EXPRESION              ::= EXPRESION_BASE | EXPRESION_BINARIA | EXPRESION_COMPUE
 EXPRESION_COMPUESTA    ::= _parentesisAbre EXPRESION _parentesisCierra ;
 EXPRESION_BINARIA      ::= EXPRESION OPERADOR_ARITMETICO EXPRESION ;
 EXPRESION_BASE         ::= _id | LITERAL ;
-EXPRESION_CONDICION    ::= EXPRESION ;
+EXPRESION_CONDICION    ::=  EXPRESION OPERADOR_BOOLEAN EXPRESION ;
 
 
 OPERADOR_ARITMETICO          ::= _op_suma | _op_resta | _op_multi | _op_division | _op_mod | _op_DIV  ;
 OPERADOR_ARITMETICO_ASIGN    ::= _op_mas_igual | _op_menos_igual | _op_div_igual | _op_mult_igual | _asignacion  ;
-
+OPERADOR_BOOLEAN             ::= _menor_igual | _menor | _igual | _mayor_igual | _mayor | _distinto | _OR | _AND | _NOT ;
 
 /* TIPOS, LITERALES Y ESTRUCTURAS ---------------------------------------------*/
 
