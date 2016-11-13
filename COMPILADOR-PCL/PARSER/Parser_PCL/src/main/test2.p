@@ -1,9 +1,12 @@
 PROGRAM 
     VAR
-    a,b,c,d: int;
-    j : string;
-    //jose, mario  STRING; este es un comentario
+    a,b, c, d : int;
+    j:  string;
     nombres: ARRAY [1 .. 100] OF STRING;
+    apellido: string ;
+    numero,limite,contador:int;  // todo esta bien
+    //:int; //hizo falta el identificador
+    //respuesta :  ; // falta tipo
     
     CONST
         PI = 3;
@@ -11,7 +14,11 @@ PROGRAM
         NOMBRE = "Juan Pérez";
         APELLIDO = "Pérez";
         APELLIDO = 2.5;
-  
+    
+    PROCEDURE funcion1( int x, int y)
+    BEGIN
+        funcion1:=0;
+    END
 
     FUNCTION Saludar(): STRING
     BEGIN

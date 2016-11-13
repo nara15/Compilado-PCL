@@ -24,6 +24,8 @@ parser code{:
 
 :}
 
+
+
 /* TERMINALES O TOKENS ********************************************************/
 
 // Palabras reservadas ---------------------------------------------------------
@@ -53,6 +55,9 @@ terminal _op_suma, _op_mas_igual, _op_menos_igual, _op_div_igual, _op_mult_igual
 terminal _id, _write, _read ;
 
 // FIN DE TERMINALES -----------------------------------------------------------
+
+
+
 
 /* NO TERMINALES **************************************************************/
 
@@ -103,14 +108,17 @@ DECLARACIONES                     ::= BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLAR
 
 BLOQUE_DECLARACION_VARIABLES      ::= _var DECLARACION_VARIABLES | ;
 DECLARACION_VARIABLES             ::= VARIABLE | VARIABLE DECLARACION_VARIABLES ;
-VARIABLE                          ::= _id DECLARACION_ID_CONSECUTIVO _dos_puntos TIPO_DATO _punto_coma;
+VARIABLE                          ::= _id DECLARACION_ID_CONSECUTIVO _dos_puntos TIPO_DATO _punto_coma 
+                                      | error _punto_coma;
 DECLARACION_ID_CONSECUTIVO        ::= _coma _id DECLARACION_ID_CONSECUTIVO |  ;
 
 /* Declaración de Constantes -------------------------------------------------*/
 
 BLOQUE_DECLARACION_CONSTANTES     ::= _const DECLARACION_CONSTANTES | ;
 DECLARACION_CONSTANTES            ::= CONSTANTE | CONSTANTE DECLARACION_CONSTANTES ;
-CONSTANTE                         ::= _id _igual LITERAL_CASE _punto_coma |  _id error:e {:parser.errorMensaje("Lo declaró mal tonto");:} LITERAL_CASE _punto_coma | _id _igual error _punto_coma;
+CONSTANTE                         ::= _id _igual LITERAL_CASE _punto_coma 
+                                     | _id error:e {:parser.errorMensaje("Lo declaró mal tonto");:} LITERAL_CASE _punto_coma 
+                                     | _id _igual error _punto_coma;
 LITERAL_CASE                      ::= _entero | _hilera | _flotante ;
 
 /* Declaración de funciones y procedimientos ---------------------------------*/
@@ -166,34 +174,33 @@ CONSTANTE_CASE                    ::= _hilera | _caracter | _entero;
 
 /* FUNCIONES READ Y WRITE ----------------------------------------------------*/
 
-FUNCION_READ           ::= _read FUNCION_READ_AUX;
-FUNCION_READ_AUX       ::= _parentesisAbre _parentesisCierra | _parentesisAbre _id _parentesisCierra;
+FUNCION_READ                      ::= _read FUNCION_READ_AUX;
+FUNCION_READ_AUX                  ::= _parentesisAbre _parentesisCierra | _parentesisAbre _id _parentesisCierra;
 
-FUNCION_WRITE          ::= _write _parentesisAbre PARAMETROS_WRITE _parentesisCierra;
-PARAMETROS_WRITE       ::= CONTENIDO_WRITE | CONTENIDO_WRITE _coma PARAMETROS_WRITE ;
-CONTENIDO_WRITE        ::= _id | _hilera;
+FUNCION_WRITE                     ::= _write _parentesisAbre PARAMETROS_WRITE _parentesisCierra;
+PARAMETROS_WRITE                  ::= CONTENIDO_WRITE | CONTENIDO_WRITE _coma PARAMETROS_WRITE ;
+CONTENIDO_WRITE                   ::= _id | _hilera;
 
 /* ASIGNACIÓN ----------------------------------------------------------------*/
 
-ASIGNACION             ::= _id  OPERADOR_ARITMETICO_ASIGN EXPRESION ;
+ASIGNACION                        ::= _id  OPERADOR_ARITMETICO_ASIGN EXPRESION ;
 
 /* EXPRESIONES ---------------------------------------------------------------*/
 
-EXPRESION              ::= EXPRESION_BASE | EXPRESION_BINARIA | EXPRESION_COMPUESTA ;
-EXPRESION_COMPUESTA    ::= _parentesisAbre EXPRESION _parentesisCierra ;
-EXPRESION_BINARIA      ::= EXPRESION OPERADOR_ARITMETICO EXPRESION ;
-EXPRESION_BASE         ::= _id | LITERAL ;
-EXPRESION_CONDICION    ::=  EXPRESION OPERADOR_BOOLEAN EXPRESION ;
+EXPRESION                         ::= EXPRESION_BASE | EXPRESION_BINARIA | EXPRESION_COMPUESTA ;
+EXPRESION_COMPUESTA               ::= _parentesisAbre EXPRESION _parentesisCierra ;
+EXPRESION_BINARIA                 ::= EXPRESION OPERADOR_ARITMETICO EXPRESION ;
+EXPRESION_BASE                    ::= _id | LITERAL ;
+EXPRESION_CONDICION               ::=  EXPRESION OPERADOR_BOOLEAN EXPRESION ;
 
 
-OPERADOR_ARITMETICO          ::= _op_suma | _op_resta | _op_multi | _op_division | _op_mod | _op_DIV  ;
-OPERADOR_ARITMETICO_ASIGN    ::= _op_mas_igual | _op_menos_igual | _op_div_igual | _op_mult_igual | _asignacion  ;
-OPERADOR_BOOLEAN             ::= _menor_igual | _menor | _igual | _mayor_igual | _mayor | _distinto | _OR | _AND | _NOT ;
+OPERADOR_ARITMETICO               ::= _op_suma | _op_resta | _op_multi | _op_division | _op_mod | _op_DIV  ;
+OPERADOR_ARITMETICO_ASIGN         ::= _op_mas_igual | _op_menos_igual | _op_div_igual | _op_mult_igual | _asignacion  ;
+OPERADOR_BOOLEAN                  ::= _menor_igual | _menor | _igual | _mayor_igual | _mayor | _distinto | _OR | _AND | _NOT ;
 
 /* TIPOS, LITERALES Y ESTRUCTURAS ---------------------------------------------*/
 
-TIPO_DATO              ::= TIPO_COMPUESTO | TIPO_SIMPLE ;
-TIPO_COMPUESTO         ::=  _array _bra_aper _entero _rango_dos_puntos _entero _bra_cerr _of TIPO_DATO ;
-TIPO_SIMPLE            ::= _string | _int | _boolean | _char | _longint | _shortint | _real ;
-
-LITERAL                ::= _entero | _hilera | _true | _false | _flotante | _caracter ;
+TIPO_DATO                         ::= TIPO_COMPUESTO | TIPO_SIMPLE ;
+TIPO_COMPUESTO                    ::=  _array _bra_aper _entero _rango_dos_puntos _entero _bra_cerr _of TIPO_DATO ;
+TIPO_SIMPLE                       ::= _string | _int | _boolean | _char | _longint | _shortint | _real ;
+LITERAL                           ::= _entero | _hilera | _true | _false | _flotante | _caracter ;
