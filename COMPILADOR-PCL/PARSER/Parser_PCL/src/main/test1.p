@@ -5,21 +5,35 @@ PROGRAM
     jose : STRING;
 BEGIN 
   
-    REPEAT 
-        IF()
-        IF()
-        REPEAT
-            IF()
-        UNTIL
-    UNTIL
-
-    CASE variable OF
-        1 : ;
+    if (i < 12) then //deberia dar error, pues debe haber una expresion
+    BEGIN
+        i:=0;
+    END
     ELSE
-        READ (a);
+    BEGIN
+        i:=0;
+    END
+
+    if (x>4)  then //deberia aceptar if anidados y cualquier tipo de expresion dentro de ( )
+     BEGIN
+           if (a>=2) then
+           BEGIN
+             i := x ++;
+           END
+           else
+           BEGIN
+             i := x --;
+           END
+     END
+     else
+     BEGIN
+         i:= x;
+     END
+
     
-    READ (a)
+    
+    READ (a);
    
-    WRITE("Hola: ", jose, a, b)
+    WRITE("Hola: ", jose, a, b);
    
 END

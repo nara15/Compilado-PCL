@@ -48,7 +48,8 @@ terminal _igual, _parentesisAbre, _parentesisCierra, _dos_puntos, _punto_coma,
 
 terminal _op_suma, _op_mas_igual, _op_menos_igual, _op_div_igual, _op_mult_igual,
          _asignacion, _op_resta , _op_multi , _op_division , _op_mod , _op_DIV,
-         _mayor_igual, _mayor, _menor_igual, _menor, _distinto, _OR, _AND, _NOT ;
+         _mayor_igual, _mayor, _menor_igual, _menor, _distinto, _OR, _AND, _NOT,
+         _op_inc, _op_dec ;
 
 // Funciones e identificadores -------------------------------------------------
 
@@ -86,7 +87,8 @@ non terminal ESTRUCTURA_CONTROL, SENTENCIA_IF, SENTENCIA_REPEAT,
 non terminal EXPRESION, EXPRESION_UNARIA, EXPRESION_COMPUESTA, EXPRESION_BINARIA,
              EXPRESION_BASE,EXPRESION_CONDICION;
 
-non terminal OPERADOR_ARITMETICO, OPERADOR_ARITMETICO_ASIGN, OPERADOR_BOOLEAN ;
+non terminal OPERADOR_ARITMETICO, OPERADOR_ARITMETICO_ASIGN, OPERADOR_BOOLEAN,
+             OPERADOR_UNARIO ;
 
 precedence left _dos_puntos, _punto_coma, _if, _repeat, _case, _write, _read ;
 
@@ -187,9 +189,10 @@ ASIGNACION                        ::= _id  OPERADOR_ARITMETICO_ASIGN EXPRESION ;
 
 /* EXPRESIONES ---------------------------------------------------------------*/
 
-EXPRESION                         ::= EXPRESION_BASE | EXPRESION_BINARIA | EXPRESION_COMPUESTA ;
+EXPRESION                         ::= EXPRESION_BASE | EXPRESION_BINARIA | EXPRESION_COMPUESTA | EXPRESION_UNARIA ;
 EXPRESION_COMPUESTA               ::= _parentesisAbre EXPRESION _parentesisCierra ;
 EXPRESION_BINARIA                 ::= EXPRESION OPERADOR_ARITMETICO EXPRESION ;
+EXPRESION_UNARIA                  ::= _id OPERADOR_UNARIO ;
 EXPRESION_BASE                    ::= _id | LITERAL ;
 EXPRESION_CONDICION               ::=  EXPRESION OPERADOR_BOOLEAN EXPRESION ;
 
@@ -197,6 +200,7 @@ EXPRESION_CONDICION               ::=  EXPRESION OPERADOR_BOOLEAN EXPRESION ;
 OPERADOR_ARITMETICO               ::= _op_suma | _op_resta | _op_multi | _op_division | _op_mod | _op_DIV  ;
 OPERADOR_ARITMETICO_ASIGN         ::= _op_mas_igual | _op_menos_igual | _op_div_igual | _op_mult_igual | _asignacion  ;
 OPERADOR_BOOLEAN                  ::= _menor_igual | _menor | _igual | _mayor_igual | _mayor | _distinto | _OR | _AND | _NOT ;
+OPERADOR_UNARIO                   ::= _op_inc | _op_dec ;
 
 /* TIPOS, LITERALES Y ESTRUCTURAS ---------------------------------------------*/
 

@@ -141,8 +141,8 @@ BLANCO = [\n| |\t|\r]
     
     ","          { return token(sym._coma, yytext());}
     ";"          { return token(sym._punto_coma, yytext());}
-    "++"         { return token(3000, yytext());}
-    "--"         { return token(3000, yytext());}
+    "++"         { return token(sym._op_inc, yytext());}
+    "--"         { return token(sym._op_dec, yytext());}
     ">="         { return token(sym._mayor_igual, yytext());}
     ">"          { return token(sym._mayor, yytext());}
     "<="         { return token(sym._menor_igual, yytext());}
