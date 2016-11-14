@@ -81,7 +81,7 @@ non terminal LITERAL,VARIABLE, CONSTANTE,TIPO_DATO, TIPO_COMPUESTO,
 non terminal ESTRUCTURA_CONTROL, SENTENCIA_IF, SENTENCIA_REPEAT, 
              SENTENCIA_CASE,CASE,CASES, CONSTANTE_CASE,LITERAL_CASE,
              FUNCION_WRITE, FUNCION_READ, FUNCION_READ_AUX, PARAMETROS_WRITE, 
-             CONTENIDO_WRITE,BLOQUE_IF, BLOQUE_ELSE, CONDICION,INICIO_FOR, 
+             BLOQUE_IF, BLOQUE_ELSE, CONDICION,INICIO_FOR, 
              BLOQUE_FOR,INICIO_WHILE, BLOQUE_WHILE;
 
 non terminal EXPRESION, EXPRESION_UNARIA, EXPRESION_COMPUESTA, EXPRESION_BINARIA,
@@ -180,8 +180,7 @@ FUNCION_READ                      ::= _read FUNCION_READ_AUX;
 FUNCION_READ_AUX                  ::= _parentesisAbre _parentesisCierra | _parentesisAbre _id _parentesisCierra;
 
 FUNCION_WRITE                     ::= _write _parentesisAbre PARAMETROS_WRITE _parentesisCierra;
-PARAMETROS_WRITE                  ::= CONTENIDO_WRITE | CONTENIDO_WRITE _coma PARAMETROS_WRITE ;
-CONTENIDO_WRITE                   ::= _id | _hilera;
+PARAMETROS_WRITE                  ::= EXPRESION | EXPRESION _coma PARAMETROS_WRITE ;
 
 /* ASIGNACIÓN ----------------------------------------------------------------*/
 

@@ -33,7 +33,7 @@ BEGIN
     
     
     READ (a);
-   
+    WRITE("Resultado! ", (3+4)*4);
     WRITE("Hola: ", jose, a, b);
    
 END
