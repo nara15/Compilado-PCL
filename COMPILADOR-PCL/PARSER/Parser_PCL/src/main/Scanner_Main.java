@@ -19,7 +19,7 @@ import logica.scanner.Scanner;
  */
 public class Scanner_Main {
 
-    private static final String pPath = "G:\\git\\Compilador-PCL\\COMPILADOR-PCL\\PARSER\\Parser_PCL\\src\\main\\test2.p";
+    private static final String pPath = "G:\\git\\Compilador-PCL\\COMPILADOR-PCL\\PARSER\\Parser_PCL\\src\\main\\archivos_prueba\\funcs_procs.p";
     /**
      * @param args the command line arguments
      */

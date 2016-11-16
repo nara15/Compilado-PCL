@@ -30,10 +30,18 @@ BEGIN
          i:= x;
      END
 
-    
+     REPEAT 
+        REPEAT
+            READ();
+            a := 3 + 3 + 3;
+        UNTIL (a + b + 3 > 5)
+    UNTIL (hola <= 2)
+
+    a := ((2 + 2) + (2 + b));
+    b := 5*(6-3)+3;
     
     READ (a);
-    WRITE("Resultado! ", (3+4)*4);
-    WRITE("Hola: ", jose, a, b);
+    WRITE ("Resultado! ", (3+4)*4);
+    WRITE ("Hola: ", jose, a, b);
    
 END

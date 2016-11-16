@@ -77,6 +77,7 @@ ERROR_STRING_SIN_CERRAR = [\"] ~[^\"]
 
 RANGO_DOS_PUNTOS = \.\.
 BLANCO = [\n| |\t|\r]
+TerminarLinea = \r | \r\n | \n
 
 %%
 
@@ -172,6 +173,7 @@ BLANCO = [\n| |\t|\r]
 }
 
 {BLANCO}                { /*Omitir el espacio blanco*/ }
+{TerminarLinea}         { }
     /**
     * LITERALES
     */
