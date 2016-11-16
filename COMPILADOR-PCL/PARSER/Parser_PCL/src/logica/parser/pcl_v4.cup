@@ -16,31 +16,34 @@ parser code{:
 	
     public void syntax_error(Symbol st)
     {
+        report_error("Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right , null);
         if (cur_token.value != null)
         {
             if (cur_token.sym == sym.error)
             {
                 errorActual += "Lexer Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";
                 //report_error(errorActual, null);
-                //report_error("Lexer Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right, null);
-                
             }
             else
             {
                 errorActual += "Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";
-                //report_error(errorActual, null);
-                //report_error("Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right, null);
+                //report_error(errorActual,null);
+    
             }
         }
-       
+        //errorActual = "";
     }
 
 
     public void errorMensaje(String msg)
     {
-        //System.err.println(msg);
         errorActual += msg;
         report_error(errorActual, null);
+        //System.out.println(msg);
+        if (errorActual.contains("Lexer")) 
+        {
+            
+        }     
         errorActual = "";
     }
 
@@ -138,7 +141,8 @@ DECLARACIONES                     ::= BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLAR
 BLOQUE_DECLARACION_VARIABLES      ::= _var DECLARACION_VARIABLES | ;
 DECLARACION_VARIABLES             ::= VARIABLE | VARIABLE DECLARACION_VARIABLES ;
 VARIABLE                          ::= _id DECLARACION_ID_CONSECUTIVO _dos_puntos TIPO_DATO _punto_coma 
-                                      | error _punto_coma;
+                                      | error {:parser.errorMensaje("Error en la declaración de variable");:} _punto_coma
+                                      ;
 DECLARACION_ID_CONSECUTIVO        ::= _coma _id DECLARACION_ID_CONSECUTIVO |  ;
 
 /* Declaración de Constantes -------------------------------------------------*/
@@ -147,7 +151,7 @@ BLOQUE_DECLARACION_CONSTANTES     ::= _const DECLARACION_CONSTANTES | ;
 DECLARACION_CONSTANTES            ::= CONSTANTE | CONSTANTE DECLARACION_CONSTANTES ;
 CONSTANTE                         ::= _id _igual LITERAL_CASE _punto_coma 
                                     | _id error:e {:parser.errorMensaje("Error en la declaración de constante");:} LITERAL_CASE _punto_coma 
-                                    | _id _igual error {:parser.errorMensaje("Error en la declaración de constante");:} _punto_coma;
+                                    ;
 LITERAL_CASE                      ::= _entero | _hilera | _flotante ;
 
 /* Declaración de funciones y procedimientos ---------------------------------*/
@@ -156,9 +160,11 @@ DECLARACIONES_FUNC_PROC           ::= FUNCION_O_PROCEDIMIENTO DECLARACIONES_FUNC
 FUNCION_O_PROCEDIMIENTO           ::= DECLARACION_FUNCION | DECLARACION_PROCEDIMIENTO;
 
 DECLARACION_FUNCION               ::= _function _id _parentesisAbre PARAMETROS _parentesisCierra _dos_puntos TIPO_DATO ESTRUCTURA_FUNCION 
-                                    | _function _id error {:parser.errorMensaje("Mala definición de la función");:} ESTRUCTURA_FUNCION;
+                                    | error {:parser.errorMensaje("Mala definición de la función");:} _end 
+                                    ;
 DECLARACION_PROCEDIMIENTO         ::= _procedure _id _parentesisAbre PARAMETROS _parentesisCierra ESTRUCTURA_PROCEDIMIENTO 
-                                    | _procedure _id error {:parser.errorMensaje("Mala definición del procedimiento");:} ESTRUCTURA_PROCEDIMIENTO ;
+                                    | _procedure _id error {:parser.errorMensaje("Mala definición del procedimiento");:} _end 
+                                    ;
 
 ESTRUCTURA_FUNCION                ::= _begin BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES CUERPO_INSTRUCCIONES _end ;
 ESTRUCTURA_PROCEDIMIENTO          ::= _begin BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES CUERPO_INSTRUCCIONES _end ;
@@ -170,16 +176,16 @@ PARAMETROS_Aux2                   ::=   _coma PARAMETROS_Aux |;
 /* Sentencias ----------------------------------------------------------------*/
 
 CUERPO_INSTRUCCIONES              ::= SENTENCIA CUERPO_INSTRUCCIONES |  ;
-SENTENCIA                         ::= ESTRUCTURA_CONTROL | INSTRUCCION _punto_coma  ;
+SENTENCIA                         ::= ESTRUCTURA_CONTROL | INSTRUCCION _punto_coma ;
 INSTRUCCION                       ::= FUNCION_READ | FUNCION_WRITE | ASIGNACION ;
 ESTRUCTURA_CONTROL                ::= SENTENCIA_IF | SENTENCIA_REPEAT | SENTENCIA_CASE | INICIO_FOR | INICIO_WHILE;
 
 /* Sentencia IF ---------------------------------------------------------------*/
 
-SENTENCIA_IF                      ::= _if _parentesisAbre CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE ;
-                                    //  |_if  error:e {:parser.errorMensaje("Existe un error dentro del IF");:} _end;
+SENTENCIA_IF                      ::= _if _parentesisAbre CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE
+                                    | _if  error:e {:parser.errorMensaje("Existe un error dentro del IF");:} _end;
 CONDICION                         ::= EXPRESION_CONDICION ;
-BLOQUE_IF                         ::= _begin CUERPO_INSTRUCCIONES _end ;
+BLOQUE_IF                         ::= _begin BLOQUE_DECLARACION_VARIABLES CUERPO_INSTRUCCIONES _end ;
 BLOQUE_ELSE                       ::= _else _begin CUERPO_INSTRUCCIONES _end | ;
 
 /* Sentencias FOR ------------------------------------------------------------*/
@@ -232,7 +238,7 @@ CONTENIDO_WRITE        ::= EXPRESION | error:e {:parser.errorMensaje("Error en s
 
 /* ASIGNACIÓN ----------------------------------------------------------------*/
 
-ASIGNACION             ::= _id  OPERADOR_ARITMETICO_ASIGN EXPRESION ;
+ASIGNACION             ::= _id  OPERADOR_ARITMETICO_ASIGN EXPRESION | error{:parser.errorMensaje("Error en la declaración ");:} ;
 
 /* EXPRESIONES ---------------------------------------------------------------*/
 
@@ -241,7 +247,7 @@ EXPRESION_COMPUESTA               ::= _parentesisAbre EXPRESION _parentesisCierr
 EXPRESION_BINARIA                 ::= EXPRESION OPERADOR_ARITMETICO EXPRESION ;
 EXPRESION_UNARIA                  ::= _id OPERADOR_UNARIO ;
 EXPRESION_BASE                    ::= _id | LITERAL ;
-EXPRESION_CONDICION               ::=  EXPRESION OPERADOR_BOOLEAN EXPRESION ;
+EXPRESION_CONDICION               ::=  EXPRESION OPERADOR_BOOLEAN EXPRESION | EXPRESION error EXPRESION ;
 
 
 OPERADOR_ARITMETICO               ::= _op_suma | _op_resta | _op_multi | _op_division | _op_mod | _op_DIV  ;
@@ -253,6 +259,7 @@ OPERADOR_UNARIO                   ::= _op_inc | _op_dec ;
 
 TIPO_DATO                         ::= TIPO_COMPUESTO | TIPO_SIMPLE ;
 TIPO_COMPUESTO                    ::=  _array _bra_aper _entero _rango_dos_puntos _entero _bra_cerr _of TIPO_DATO 
-                                      |_array _bra_aper _entero _bra_cerr _of TIPO_DATO;
+                                     | _array _bra_aper _entero _bra_cerr _of TIPO_DATO
+                                     ;
 TIPO_SIMPLE                       ::= _string | _int | _boolean | _char | _longint | _shortint | _real ;
 LITERAL                           ::= _entero | _hilera | _true | _false | _flotante | _caracter ;

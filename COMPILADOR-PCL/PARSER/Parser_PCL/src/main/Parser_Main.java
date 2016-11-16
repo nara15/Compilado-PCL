@@ -22,7 +22,7 @@ import logica.scanner.Scanner;
 public class Parser_Main
 {
     
-    private static final String pFileName = "funcs_procs.p";
+    private static final String pFileName = "repeat.p";
     
     private static final String pPath = Paths.get("").toAbsolutePath().toString() 
             + "\\src\\main\\archivos_prueba\\" + pFileName;

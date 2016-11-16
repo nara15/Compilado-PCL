@@ -1,4 +1,4 @@
-PROGRAM 
+PROGRAM prueba
     VAR
     a,b : STRING;
     j : STRING;

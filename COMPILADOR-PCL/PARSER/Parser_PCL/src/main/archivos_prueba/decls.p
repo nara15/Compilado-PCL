@@ -6,7 +6,7 @@ PROGRAM Prueba
         numero,limite,contador:int;  // todo esta bien
         :int; //hizo falta el identificador
         respuesta :  ; // falta tipo
-        coleccion2: ARRAY[5 OF longint; // error porque falta el OF
+        coleccion2: ARRAY[5]  longint; // error porque falta el OF
         a : ;
 
     CONST

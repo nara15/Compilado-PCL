@@ -2,52 +2,49 @@
 //variables y constantes
 PROGRAM Prueba
 
-    FUNCTION funcion0 () : int // es una funcion por lo que debe tener tipo de retorno
+    PROCEDURE funcion1(  x, int y)
     BEGIN
-        WRITE("hola función 0");
-        funcion0:= 12;
+        funcion1:=0;
     END
 
-    PROCEDURE funcion1( int  x, int y)
-    BEGIN
-        funcion1:=0.1;
-    END
-
-    FUNCTION funcion11 () : int  // es una funcion por lo que debe tener tipo de retorno
-    BEGIN
-        funcion11:=1;
-    END
-
-
-    PROCEDURE funcion2(int x, int y)  //no declaro tipos de los parametros
+    PROCEDURE funcion2( x, y)  //no declaro tipos de los parametros
     BEGIN
         funcion2:=0;
     END
+    
+    FUNCTION funcion5 (int x)  // es una funcion por lo que debe tener tipo de retorno
+    BEGIN
+        if (x < 3)
+        begin
+            write(""menor de 3);
+        end
+        funcion5:= 12.3;
+    END
 
-
-    PROCEDURE funcion3( int x,  int y)  //no definio los identificadores
+    PROCEDURE funcion3( int , int)  //no definio los identificadores
     BEGIN
         funcion3:=0;
     END
 
-
-    FUNCTION funcion4 ()   // es una funcion por lo que debe tener tipo de retorno
+    FUNCTION funcion4 ()  // es una funcion por lo que debe tener tipo de retorno
     BEGIN
-        if (a = 2)
-        BEGIN
-            write("j");
-        END
-        funcion4:= 12;
-        
+        funcion4:=0;
     END
 
-    FUNCTION funcion5 ()  // es una funcion por lo que debe tener tipo de retorno
-    BEGIN
-        funcion5:= 12.3;
-    END
+    
 
 BEGIN
 
-    WRITE ("Hola prueba");
+    
+    if (a > 3) then
+    BEGIN
+        VAR
+        numero,limite,contador:int; 
+        :int; 
+        respuesta :  ; 
+        coleccion2: ARRAY[5]  longint; 
+
+        write("No es A");
+    END
 
 END

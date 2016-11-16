@@ -19,7 +19,7 @@ import logica.scanner.Scanner;
  */
 public class Scanner_Main {
 
-    private static final String pPath = "G:\\git\\Compilador-PCL\\COMPILADOR-PCL\\PARSER\\Parser_PCL\\src\\main\\archivos_prueba\\funcs_procs.p";
+    private static final String pPath = "M:\\Github\\Compilador-PCL\\COMPILADOR-PCL\\PARSER\\Parser_PCL\\src\\main\\archivos_prueba\\if.p";
     /**
      * @param args the command line arguments
      */
@@ -43,8 +43,8 @@ public class Scanner_Main {
             }
 
         } catch (FileNotFoundException ex) 
-        {
-
+        {       
+              
 
 
         } catch (IOException ex) 
