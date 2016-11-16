@@ -4,7 +4,8 @@ import java_cup.runtime.*;
 
 parser code{:
     
-    public String errores = "";
+    public String errorActual = "";
+    
     
     public void report_fatal_error(String message, Object info)
     {
@@ -19,20 +20,28 @@ parser code{:
         {
             if (cur_token.sym == sym.error)
             {
-                report_error("Lexer Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right, null);
+                errorActual += "Lexer Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";
+                //report_error(errorActual, null);
+                //report_error("Lexer Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right, null);
+                
             }
             else
             {
-                report_error("Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right, null);
+                errorActual += "Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";
+                //report_error(errorActual, null);
+                //report_error("Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right, null);
             }
         }
+       
     }
 
 
     public void errorMensaje(String msg)
     {
-        System.err.println(msg);
-        System.out.println();
+        //System.err.println(msg);
+        errorActual += msg;
+        report_error(errorActual, null);
+        errorActual = "";
     }
 
 :}
@@ -147,9 +156,9 @@ DECLARACIONES_FUNC_PROC           ::= FUNCION_O_PROCEDIMIENTO DECLARACIONES_FUNC
 FUNCION_O_PROCEDIMIENTO           ::= DECLARACION_FUNCION | DECLARACION_PROCEDIMIENTO;
 
 DECLARACION_FUNCION               ::= _function _id _parentesisAbre PARAMETROS _parentesisCierra _dos_puntos TIPO_DATO ESTRUCTURA_FUNCION 
-                                    | _function error {:parser.errorMensaje("Mala definición de la función");:} ESTRUCTURA_FUNCION;
-DECLARACION_PROCEDIMIENTO         ::= _procedure _id _parentesisAbre PARAMETROS _parentesisCierra ESTRUCTURA_PROCEDIMIENTO
-                                    | _procedure error {:parser.errorMensaje("Mala definición del procedimiento");:} ESTRUCTURA_PROCEDIMIENTO ;
+                                    | _function _id error {:parser.errorMensaje("Mala definición de la función");:} ESTRUCTURA_FUNCION;
+DECLARACION_PROCEDIMIENTO         ::= _procedure _id _parentesisAbre PARAMETROS _parentesisCierra ESTRUCTURA_PROCEDIMIENTO 
+                                    | _procedure _id error {:parser.errorMensaje("Mala definición del procedimiento");:} ESTRUCTURA_PROCEDIMIENTO ;
 
 ESTRUCTURA_FUNCION                ::= _begin BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES CUERPO_INSTRUCCIONES _end ;
 ESTRUCTURA_PROCEDIMIENTO          ::= _begin BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES CUERPO_INSTRUCCIONES _end ;
@@ -167,8 +176,8 @@ ESTRUCTURA_CONTROL                ::= SENTENCIA_IF | SENTENCIA_REPEAT | SENTENCI
 
 /* Sentencia IF ---------------------------------------------------------------*/
 
-SENTENCIA_IF                      ::= _if _parentesisAbre CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE 
-                                      |_if  error:e {:parser.errorMensaje("Existe un error dentro del IF");:} _end;
+SENTENCIA_IF                      ::= _if _parentesisAbre CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE ;
+                                    //  |_if  error:e {:parser.errorMensaje("Existe un error dentro del IF");:} _end;
 CONDICION                         ::= EXPRESION_CONDICION ;
 BLOQUE_IF                         ::= _begin CUERPO_INSTRUCCIONES _end ;
 BLOQUE_ELSE                       ::= _else _begin CUERPO_INSTRUCCIONES _end | ;
