@@ -147,8 +147,9 @@ DECLARACIONES_FUNC_PROC           ::= FUNCION_O_PROCEDIMIENTO DECLARACIONES_FUNC
 FUNCION_O_PROCEDIMIENTO           ::= DECLARACION_FUNCION | DECLARACION_PROCEDIMIENTO;
 
 DECLARACION_FUNCION               ::= _function _id _parentesisAbre PARAMETROS _parentesisCierra _dos_puntos TIPO_DATO ESTRUCTURA_FUNCION 
-                                    | _function error {:parser.errorMensaje("Error - Mala definición de la función");:} ESTRUCTURA_FUNCION;
-DECLARACION_PROCEDIMIENTO         ::= _procedure _id _parentesisAbre PARAMETROS _parentesisCierra ESTRUCTURA_PROCEDIMIENTO ;
+                                    | _function error {:parser.errorMensaje("Mala definición de la función");:} ESTRUCTURA_FUNCION;
+DECLARACION_PROCEDIMIENTO         ::= _procedure _id _parentesisAbre PARAMETROS _parentesisCierra ESTRUCTURA_PROCEDIMIENTO
+                                    | _procedure error {:parser.errorMensaje("Mala definición del procedimiento");:} ESTRUCTURA_PROCEDIMIENTO ;
 
 ESTRUCTURA_FUNCION                ::= _begin BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES CUERPO_INSTRUCCIONES _end ;
 ESTRUCTURA_PROCEDIMIENTO          ::= _begin BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES CUERPO_INSTRUCCIONES _end ;
