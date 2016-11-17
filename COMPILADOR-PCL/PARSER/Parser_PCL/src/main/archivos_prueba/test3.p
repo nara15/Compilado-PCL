@@ -1,4 +1,4 @@
-PROGRAM 
+PROGRAM prueba
     VAR
     a,b, c, d : int;
     j:  string;
@@ -51,7 +51,7 @@ BEGIN
             BEGIN
                 WRITE("Hola");
                 
-                WHILE hola <= 3 DO
+                WHILE (hola <= 3) DO
                     BEGIN
                         READ(a);
                         WRITE("HOLA:", a);
@@ -71,18 +71,24 @@ BEGIN
         REPEAT
             READ();
             a := 3 + 3 + 3;
-        UNTIL ((2 + 2) MOD (2 + 3)) + (3*5/5) = 3
-    UNTIL hola <= 2 
+        UNTIL (a = 3)
+    UNTIL (hola <= 2) 
 
     CASE variable OF
         1 : WRITE("Hola"); 
         2 : WRITE("dos");
        
-    
-        
+         
     a := ((2 + 2) + (2 + b));
     b := 5*(6-3)+1;
-    read (a);
-    WRITE("Hola: ", jose, a, b);
+    c := a;
+    d := a++ ;
+
+
+
+    read();
+    read (a,b);
+    write();
+    WRITE("Hola: " jose, a, b);
    
 END

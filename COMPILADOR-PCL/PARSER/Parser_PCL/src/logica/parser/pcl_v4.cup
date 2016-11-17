@@ -16,7 +16,7 @@ parser code{:
 	
     public void syntax_error(Symbol st)
     {
-        report_error("Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right , null);
+        //report_error("Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right , null);
         if (cur_token.value != null)
         {
             if (cur_token.sym == sym.error)
@@ -132,7 +132,9 @@ precedence left error;
 
 start with INICIO_PROGRAMA;
 
-INICIO_PROGRAMA                   ::= _program _id BLOQUE_PROGRAMA;
+INICIO_PROGRAMA                   ::= _program _id BLOQUE_PROGRAMA
+                                     |_program error {:parser.errorMensaje("Debe tener nombre");:} BLOQUE_PROGRAMA
+                                     ;
 BLOQUE_PROGRAMA                   ::= DECLARACIONES _begin CUERPO_INSTRUCCIONES _end ;
 DECLARACIONES                     ::= BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES DECLARACIONES_FUNC_PROC ;
 
