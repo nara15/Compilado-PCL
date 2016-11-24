@@ -47,4 +47,13 @@ BEGIN
         write("No es A");
     END
 
+   while (a>8) do
+        BEGIN
+          i:=0;
+        END
+
+    while (a>8) do
+        BEGIN
+          i:=0;
+        END
 END

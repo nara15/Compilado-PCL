@@ -3,7 +3,7 @@ PROGRAM prueba
     a,b, c, d : int;
     j:  string;
     nombres: ARRAY [1 .. 100] OF STRING;
-    apellido: string ;
+    ape%llido: string ;
     numero,limite,contador:int;  // todo esta bien
     //:int; //hizo falta el identificador
     //respuesta :  ; // falta tipo
@@ -47,7 +47,7 @@ BEGIN
         
     FOR i:=1 TO 10 DO
         BEGIN
-            IF (saludo = "hola") THEN
+            IF IF (salu%do = "hola") THEN
             BEGIN
                 WRITE("Hola");
                 
