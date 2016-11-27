@@ -1,0 +1,244 @@
+package logica.parser;
+import java.util.ArrayList;
+import java_cup.runtime.*;
+import logica.semantico.registros.*;
+import logica.semantico.*;
+
+parser code{:
+    
+    public String errorActual = "";
+    public boolean estaProcesandoFuncsProcs = false;
+    PilaSemantica<Simbolo> pila_semantica = new PilaSemantica();
+    TablaSimbolos tabla_simbolos = new TablaSimbolos();
+    public ArrayList<Simbolo> _variables = new ArrayList<>();
+    
+    public void reportarErrorSemantico(String msg) 
+    {
+        System.err.println("Semantic error: " + msg);
+        System.out.println();
+    }
+    
+    public void report_fatal_error(String message, Object info)
+    {
+        System.err.println("Error fatal. Imposible recuperarse.\n");
+    }
+    
+    public void unrecovered_syntax_error(Symbol cur_token) {}
+	
+    public void syntax_error(Symbol st)
+    {
+        //report_error("Algo: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right , null);
+        if (cur_token.value != null)
+        {
+            if (cur_token.sym == sym.error)
+            {
+                errorActual += "Lexer Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";
+                //report_error(errorActual, null);
+            }
+            else
+            {
+                errorActual += "Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";
+                //report_error(errorActual,null);
+    
+            }
+        }
+        //errorActual = "";
+    }
+
+
+    public void errorMensaje(String msg)
+    {
+        errorActual += msg;
+        report_error(errorActual, null);   
+        errorActual = "";
+    }
+
+    public void guardarVar_TS()
+    {
+        String tipo = (String) pila_semantica.pop().value;
+        
+        while(pila_semantica.peek().sym == roles.VARIABLE || !pila_semantica.isEmpty())
+        {
+            Variable_Simbolo var = (Variable_Simbolo) pila_semantica.pop();
+            
+            if(!this.estaProcesandoFuncsProcs)
+            {
+                var.setEsGlobal(true);
+                var.setTipo(tipo);
+                boolean res = this.tabla_simbolos.insertarSimbolo((String) var.value, var);
+
+                if (res == false)
+                {
+                    reportarErrorSemantico("Variable " + (String) var.value+ " ya declarada");
+                }
+            }
+            
+            if (pila_semantica.size()==0) break;
+            
+        }
+    }
+    public void recordarID(int left, int right, Object token)
+    {
+        pila_semantica.push(new Variable_Simbolo(roles.VARIABLE,left, right,token));
+    }
+    public void recordarTipo(int left, int right, Object tokenTipo)
+    {
+        pila_semantica.push(new Generico_Simbolo(roles.TIPO,left, right, tokenTipo));
+    }
+:}
+
+/* TERMINALES O TOKENS ********************************************************/
+
+// Palabras reservadas ---------------------------------------------------------
+
+terminal _program, _var, _string, _begin, _end, _if, _repeat, _else, _const,
+         _case, _of, _until, _function, _procedure, _then,  _to, _for, _do, _while,
+         _array;
+
+// Tipos de datos --------------------------------------------------------------
+
+terminal _int, _longint, _shortint,_char, _boolean, _real, _entero,_hilera, 
+         _caracter, _flotante,_true, _false ;
+
+// Operador y caracteres especiales --------------------------------------------
+
+terminal _igual, _parentesisAbre, _parentesisCierra, _dos_puntos, _punto_coma,
+         _coma, _bra_aper, _bra_cerr, _punto, _rango_dos_puntos ;
+
+// Operadores ------------------------------------------------------------------
+
+terminal _op_suma, _op_mas_igual, _op_menos_igual, _op_div_igual, _op_mult_igual,
+         _asignacion, _op_resta , _op_multi , _op_division , _op_mod , _op_DIV,
+         _mayor_igual, _mayor, _menor_igual, _menor, _distinto, _OR, _AND, _NOT,
+         _op_inc, _op_dec ;
+
+// Funciones e identificadores -------------------------------------------------
+
+terminal _id, _write, _read;
+
+// FIN DE TERMINALES -----------------------------------------------------------
+
+/* NO TERMINALES **************************************************************/
+
+// Estructura del programa -----------------------------------------------------
+non terminal INICIO_PROGRAMA, BLOQUE_PROGRAMA ;
+
+// Declaraciones ---------------------------------------------------------------
+non terminal DECLARACIONES, BLOQUE_DECLARACION_VARIABLES, 
+             BLOQUE_DECLARACION_CONSTANTES ;
+
+// Declaración de variables, constantes ----------------------------------------
+non terminal DECLARACION_VARIABLE, DCL_VAR_CONSECUTIVA, DECLARACION_CONSTANTE,
+             VARIABLE, CONSTANTE;
+
+// Declaración de funciones y procedimientos
+non terminal DECLARACIONES_FUNC_PROC, FUNCION_O_PROCEDIMIENTO, DECLARACION_FUNCION,
+             DECLARACION_PROCEDIMIENTO, ESTRUCTURA_FUNCION, PARAMETROS, PARAMETROS_Aux1,
+             PARAMETROS_Aux2;
+
+// Tipo de datos y literales ---------------------------------------------------
+non terminal TIPO_DATO, TIPO_COMPUESTO, TIPO_SIMPLE, LITERAL ;
+
+
+precedence left error, _coma, _begin;
+
+
+start with INICIO_PROGRAMA ;
+
+// -------------- Inicio de la gramática ---------------------------------------
+
+INICIO_PROGRAMA                     ::= _program _id BLOQUE_PROGRAMA {:System.out.println("Terminó");:} 
+                                    ;
+BLOQUE_PROGRAMA                     ::= DECLARACIONES _begin _end
+                                    ;
+DECLARACIONES                       ::= BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES DECLARACIONES_FUNC_PROC 
+                                    ;
+BLOQUE_DECLARACION_VARIABLES        ::= _var DECLARACION_VARIABLE
+                                    | 
+                                    ;
+
+// --------------- Variables ---------------------------------------------------
+
+DECLARACION_VARIABLE                ::= VARIABLE 
+                                    |   VARIABLE DECLARACION_VARIABLE  
+                                    |   error{:parser.errorMensaje("Error en la declaración de la variable :(");:} DECLARACION_VARIABLE
+                                    ;
+VARIABLE                            ::= _id : i
+                                        {:
+                                           parser.recordarID(ileft, iright, i);
+                                        :} 
+                                        DCL_VAR_CONSECUTIVA _dos_puntos TIPO_DATO : t 
+                                        {:
+                                            parser.recordarTipo(tleft, tright, t);
+                                            parser.guardarVar_TS();
+                                            
+                                        :} 
+                                        _punto_coma 
+                                    ;
+DCL_VAR_CONSECUTIVA                 ::= _coma _id:i 
+                                        {:
+                                            parser.recordarID(ileft, iright, i);
+                                        :}  
+                                        DCL_VAR_CONSECUTIVA 
+                                    |  
+                                    ;
+
+// ----------------- Constantes ------------------------------------------------
+
+BLOQUE_DECLARACION_CONSTANTES       ::= _const DECLARACION_CONSTANTE 
+                                    | 
+                                    ;
+DECLARACION_CONSTANTE               ::= CONSTANTE
+                                    |   CONSTANTE DECLARACION_CONSTANTE
+                                    ;
+CONSTANTE                           ::= _id _igual LITERAL _punto_coma
+                                    |   error{:parser.errorMensaje("Error en la declaración de la constante");:} LITERAL _punto_coma
+                                    ;
+
+// -------------------- Procedimientos y funciones -----------------------------
+
+DECLARACIONES_FUNC_PROC             ::= FUNCION_O_PROCEDIMIENTO DECLARACIONES_FUNC_PROC 
+                                    |   error{:parser.errorMensaje("Algo donde no debería estar");:} DECLARACIONES_FUNC_PROC
+                                    |
+                                    ;
+FUNCION_O_PROCEDIMIENTO             ::= DECLARACION_FUNCION | DECLARACION_PROCEDIMIENTO
+                                    ;
+DECLARACION_FUNCION                 ::= _function {:parser.estaProcesandoFuncsProcs=true;:} _id _parentesisAbre PARAMETROS _parentesisCierra _dos_puntos TIPO_DATO ESTRUCTURA_FUNCION
+                                    |   _function error {:parser.errorMensaje("Mala declaración de la función");:} ESTRUCTURA_FUNCION
+                                    ;
+ESTRUCTURA_FUNCION                  ::= BLOQUE_DECLARACION_VARIABLES _begin  _end 
+                                    |   error {:System.out.println("Error");:} _begin _end
+                                    ;
+DECLARACION_PROCEDIMIENTO           ::= _procedure 
+                                    ;
+PARAMETROS                          ::= PARAMETROS_Aux1 
+                                    |
+                                    ;
+PARAMETROS_Aux1                     ::= TIPO_DATO _id PARAMETROS_Aux2
+                                    ;
+PARAMETROS_Aux2                     ::= _coma PARAMETROS_Aux1 
+                                    |
+                                    ;
+
+//------------------- Tipo de datos y literales --------------------------------
+
+TIPO_DATO                           ::= TIPO_COMPUESTO 
+                                    |   TIPO_SIMPLE:ts {:RESULT = ts;:}
+                                    ;
+TIPO_COMPUESTO                      ::= _array _bra_aper _entero _rango_dos_puntos _entero _bra_cerr _of TIPO_DATO 
+                                    |   _array _bra_aper _entero _bra_cerr _of TIPO_DATO
+                                    ;
+TIPO_SIMPLE                         ::=  _string:t  {:RESULT = t;:} 
+                                    |   _int:t      {:RESULT =t ;:}  
+                                    |   _boolean:t  {:RESULT = t;:} 
+                                    |   _char:t     {:RESULT = t;:} 
+                                    |   _longint:t  {:RESULT = t;:} 
+                                    |   _shortint:t {:RESULT = t;:} 
+                                    |   _real:t     {:RESULT = t;:} 
+                                    ;
+LITERAL                             ::= _entero 
+                                    |   _hilera 
+                                    |   _true 
+                                    |   _false 
+                                    |   _flotante 
+                                    |   _caracter ;

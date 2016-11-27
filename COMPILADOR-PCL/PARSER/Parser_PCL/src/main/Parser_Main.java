@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package main;
 
 import java.io.BufferedReader;
@@ -13,8 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.parser.Parser;
 import logica.scanner.Scanner;
-
-
 /**
  *
  * @author José Mario Naranjo Leiva
@@ -22,7 +15,7 @@ import logica.scanner.Scanner;
 public class Parser_Main
 {
     
-    private static final String pFileName = "PruebaEstControl.pas";
+    private static final String pFileName = "test.p";
     
     private static final String pPath = Paths.get("").toAbsolutePath().toString() 
             + "\\src\\main\\archivos_prueba\\" + pFileName;

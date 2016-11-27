@@ -157,7 +157,9 @@ CONSTANTE                         ::= _id _igual LITERAL_CASE _punto_coma
 LITERAL_CASE                      ::= _entero | _hilera | _flotante ;
 
 /* Declaración de funciones y procedimientos ---------------------------------*/
-
+PARAMETROS                        ::=   PARAMETROS_Aux |;
+PARAMETROS_Aux                    ::=   TIPO_DATO _id PARAMETROS_Aux2;
+PARAMETROS_Aux2                   ::=   _coma PARAMETROS_Aux |;
 DECLARACIONES_FUNC_PROC           ::= FUNCION_O_PROCEDIMIENTO DECLARACIONES_FUNC_PROC |;
 FUNCION_O_PROCEDIMIENTO           ::= DECLARACION_FUNCION | DECLARACION_PROCEDIMIENTO;
 
