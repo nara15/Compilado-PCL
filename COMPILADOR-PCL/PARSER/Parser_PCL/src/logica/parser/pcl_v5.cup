@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java_cup.runtime.*;
 import logica.semantico.registros.*;
 import logica.semantico.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 parser code{:
     
@@ -11,11 +13,42 @@ parser code{:
     PilaSemantica<Simbolo> pila_semantica = new PilaSemantica();
     TablaSimbolos tabla_simbolos = new TablaSimbolos();
     PilaSemantica<Simbolo> pila_temp = new PilaSemantica();
+    private boolean _hayErrores = false;
+
+    String declaracionesVariables = "";
+
+    // Generación de código 
+    public void escribirVariables()
+    {
+        if (!hayErrores())
+        {
+            try{
+               PrintWriter writer = new PrintWriter("code.asm", "UTF-8");
+               writer.println("datos segment\n" + declaracionesVariables + "end \n");
+               writer.close();
+            } catch (IOException e) 
+            {
+               // do something
+            }
+        }
+    }
+
+    public void setHayErrores(boolean v)
+    {
+        _hayErrores = v;
+    }
+
+    public boolean hayErrores()
+    {
+        return _hayErrores;
+    }
     
+    // Reporte de errores
     public void reportarErrorSemantico(String msg) 
     {
         System.err.println("Semantic error: " + msg);
         System.out.println();
+        this.setHayErrores(true);
     }
     
     public void report_fatal_error(String message, Object info)
@@ -24,7 +57,7 @@ parser code{:
     }
     
     public void unrecovered_syntax_error(Symbol cur_token) {}
-	
+    PilaSemantica<Simbolo> pila_temp1 = new PilaSemantica();
     public void syntax_error(Symbol st)
     {
         report_error("Algo: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right , null);
@@ -39,6 +72,7 @@ parser code{:
                 errorActual += "Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";    
             }
         }
+        this.setHayErrores(true);
     }
 
 
@@ -47,8 +81,8 @@ parser code{:
         errorActual += msg;
         report_error(errorActual, null);   
         errorActual = "";
+        this.setHayErrores(true);
     }
-
     public void guardarVar_TS()
     {
         String tipo = (String) pila_semantica.pop().value; 
@@ -64,6 +98,21 @@ parser code{:
                 if (res == false)
                 {
                     reportarErrorSemantico("Variable " + (String) var.value+ " ya declarada");
+                }
+                else
+                {
+                    this.declaracionesVariables +=  " " + var.value + " db " + " ? \n";
+                }
+            }
+            else
+            {
+                String nombreFuncion = this.pila_temp1.peek().getNombre();
+                var.setFuncionPadre(nombreFuncion);
+                var.setTipo(tipo);   
+                boolean res = this.tabla_simbolos.insertarSimbolo(nombreFuncion+"#"+var.value, var);
+                if (res == false)
+                {
+                    reportarErrorSemantico("Variable " + (String) var.value + "línea: " + var.left + " ya declarada");
                 }
             }
             if (pila_semantica.size()==0) break;  
@@ -84,7 +133,11 @@ parser code{:
                 
                 if (!inserto)
                 {
-                    reportarErrorSemantico("Constante " + (String) var.value+ " ya declarada");
+                    reportarErrorSemantico("Constante " + (String) var.value+ "fila: " + var.right + " columna: " + var.left + " ya declarada");
+                }
+                else
+                {
+                    this.declaracionesVariables += " " + var.value + " EQU " + var.getValor() + "\n";
                 }
             }
             if (pila_semantica.size() == 0) break;
@@ -117,6 +170,7 @@ parser code{:
             reportarErrorSemantico("Función "+nombreFuncion+" ya declarada "+
                     "línea " + funcion.left + " columna " + funcion.right );
         }  
+        this.pila_temp1.push(funcion);
     }
     
     // MÉTODOS DE RECORDAR -----------------------------------------------------
@@ -277,7 +331,13 @@ start with INICIO_PROGRAMA ;
 
 // -------------- Inicio de la gramática ---------------------------------------
 
-INICIO_PROGRAMA                     ::= _program _id BLOQUE_PROGRAMA {:System.out.println("Terminó " + parser.tabla_simbolos);:} 
+INICIO_PROGRAMA                     ::= _program _id BLOQUE_PROGRAMA 
+                                    {:
+                                        System.out.println("Terminó \n ");
+                                        parser.escribirVariables();
+                                        System.out.println(parser.tabla_simbolos);
+                                        
+                                    :} 
                                     ;
 BLOQUE_PROGRAMA                     ::= DECLARACIONES _begin CUERPO_INSTRUCCIONES _end
                                     ;
@@ -301,7 +361,6 @@ VARIABLE                            ::= _id : i
                                         {:
                                             parser.recordarTipo(tleft, tright, t);
                                             parser.guardarVar_TS();
-                                            
                                         :} 
                                         _punto_coma 
                                     ;

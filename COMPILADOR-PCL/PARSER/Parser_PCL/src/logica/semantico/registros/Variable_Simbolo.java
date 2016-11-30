@@ -60,7 +60,18 @@ public class Variable_Simbolo extends Simbolo
     @Override
     public String toString() 
     {
-        return "{" + " rol = "+ this.getRol(sym) + ", _nombre = " + this.value + ", _tipo = " + _tipo + ", _valor = " + _valor + '}';
+        String  res = "";
+        
+        if (this.esGlobal())
+        {
+            res = "Global";
+        }
+        else
+        {
+            res = "Local";
+        }
+        return "{" + " rol = "+ this.getRol(sym) + ", _nombre = " + this.value + ", _tipo = " + _tipo + ", _valor = " + _valor + 
+                ", funcionPadre = " + this.getFuncionPadre() + " , ámbito = " + res + '}';
     }
     
     
