@@ -39,7 +39,6 @@ parser code{:
     {
         errorActual += msg;
         report_error(errorActual, null);
-        //System.out.println(msg);
         if (errorActual.contains("Lexer")) 
         {
             

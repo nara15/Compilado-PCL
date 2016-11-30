@@ -13,5 +13,11 @@ public class Generico_Simbolo extends Simbolo
     {
         super(id, l, r, o);
     }
+
+    @Override
+    public String toString()
+    {
+        return "{" + this.getNombre() + " " + this.value + '}';
+    }
     
 }

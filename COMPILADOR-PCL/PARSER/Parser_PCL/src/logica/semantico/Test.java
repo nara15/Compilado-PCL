@@ -18,8 +18,9 @@ public class Test
         
         Variable_Simbolo s = new Variable_Simbolo(1,1,1,"Hola");
         
+        Object hola = true;
         
-        System.out.println(roles.VARIABLE);
+        System.out.println(hola.getClass());
     }
     
 }

@@ -10,6 +10,7 @@ public class Variable_Simbolo extends Simbolo
     private boolean _esGlobal;
     private String _funcionPadre;
     private String _tipo;
+    private Object _valor;
     
     public Variable_Simbolo(int id, int l, int r, Object o) 
     {
@@ -45,5 +46,23 @@ public class Variable_Simbolo extends Simbolo
     {
         this._tipo = _tipo;
     }
+
+    public Object getValor() 
+    {
+        return _valor;
+    }
+
+    public void setValor(Object _valor) 
+    {
+        this._valor = _valor;
+    }
+
+    @Override
+    public String toString() 
+    {
+        return "{" + " rol = "+ this.getRol(sym) + ", _nombre = " + this.value + ", _tipo = " + _tipo + ", _valor = " + _valor + '}';
+    }
+    
+    
     
 }

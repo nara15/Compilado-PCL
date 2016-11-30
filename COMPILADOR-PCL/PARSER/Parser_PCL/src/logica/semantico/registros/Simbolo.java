@@ -15,6 +15,25 @@ public abstract class Simbolo extends Symbol
     {
         super(id, l, r, o);
     }
+    
+    protected String getRol(int rol)
+    {
+        switch(rol)
+        {
+            case roles.VARIABLE: 
+                return "Variable"; 
+            case roles.CONSTANTE:
+                return "Constante";
+            case roles.LITERAL:
+                return "Literal";  
+            case roles.PARAMETRO:
+                return "Parámetro";
+            case roles.FUNCION:
+                return "Función";
+            default:
+                return "";
+        }
+    }
 
     public String getNombre() 
     {

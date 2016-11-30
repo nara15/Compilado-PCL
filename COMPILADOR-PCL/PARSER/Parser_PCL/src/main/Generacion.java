@@ -12,7 +12,7 @@ import utilidades.generadores.Scanner_Generador;
 public class Generacion
 {
 
-    public static void main(String[] args)
+    public static void main(String[] args) 
     {
         IGenerador gen;
         

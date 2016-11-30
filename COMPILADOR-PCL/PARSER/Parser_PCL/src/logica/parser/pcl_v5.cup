@@ -10,7 +10,7 @@ parser code{:
     public boolean estaProcesandoFuncsProcs = false;
     PilaSemantica<Simbolo> pila_semantica = new PilaSemantica();
     TablaSimbolos tabla_simbolos = new TablaSimbolos();
-    public ArrayList<Simbolo> _variables = new ArrayList<>();
+    PilaSemantica<Simbolo> pila_temp = new PilaSemantica();
     
     public void reportarErrorSemantico(String msg) 
     {
@@ -27,22 +27,18 @@ parser code{:
 	
     public void syntax_error(Symbol st)
     {
-        //report_error("Algo: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right , null);
+        report_error("Algo: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right , null);
         if (cur_token.value != null)
         {
             if (cur_token.sym == sym.error)
             {
                 errorActual += "Lexer Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";
-                //report_error(errorActual, null);
             }
             else
             {
-                errorActual += "Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";
-                //report_error(errorActual,null);
-    
+                errorActual += "Syntax Error: "+ cur_token.value + ". Linea: " + cur_token.left + ". Columna: " + cur_token.right + " -------- ";    
             }
         }
-        //errorActual = "";
     }
 
 
@@ -55,12 +51,10 @@ parser code{:
 
     public void guardarVar_TS()
     {
-        String tipo = (String) pila_semantica.pop().value;
-        
+        String tipo = (String) pila_semantica.pop().value; 
         while(pila_semantica.peek().sym == roles.VARIABLE || !pila_semantica.isEmpty())
         {
-            Variable_Simbolo var = (Variable_Simbolo) pila_semantica.pop();
-            
+            Variable_Simbolo var = (Variable_Simbolo) pila_semantica.pop(); 
             if(!this.estaProcesandoFuncsProcs)
             {
                 var.setEsGlobal(true);
@@ -72,11 +66,60 @@ parser code{:
                     reportarErrorSemantico("Variable " + (String) var.value+ " ya declarada");
                 }
             }
-            
-            if (pila_semantica.size()==0) break;
-            
+            if (pila_semantica.size()==0) break;  
         }
     }
+
+    public void guardarConst_TS()
+    {
+        Object valor = pila_semantica.pop().value;
+        while(pila_semantica.peek().sym == roles.CONSTANTE || !pila_semantica.isEmpty())
+        {
+            if (!this.estaProcesandoFuncsProcs)
+            {
+                Variable_Simbolo var = (Variable_Simbolo) pila_semantica.pop(); 
+                var.setEsGlobal(true);
+                var.setValor(valor);
+                boolean inserto = this.tabla_simbolos.insertarSimbolo((String) var.value, var);
+                
+                if (!inserto)
+                {
+                    reportarErrorSemantico("Constante " + (String) var.value+ " ya declarada");
+                }
+            }
+            if (pila_semantica.size() == 0) break;
+        }
+    }
+
+    public void guardarFuncion_TS()
+    {
+        int contParametros = 0;
+        Object valorRetorno = pila_semantica.pop().value;
+        int index = pila_semantica.buscar(logica.semantico.registros.Funcion_Simbolo.class);
+        String nombreFuncion = pila_semantica.get(index).getNombre();
+        while(pila_semantica.peek().sym == roles.PARAMETRO)
+        {
+            Simbolo_Parametro param = (Simbolo_Parametro)pila_semantica.pop();
+            param.setFuncion(nombreFuncion);
+            contParametros ++;
+            param.setPosParametro(contParametros);
+            tabla_simbolos.insertarSimbolo(param.getNombre() + "#" + contParametros, param);
+            
+        }
+        Funcion_Simbolo funcion = (Funcion_Simbolo) pila_semantica.pop();
+        funcion.setCant_Parametros(contParametros);
+        funcion.setValorRetorno((String) valorRetorno);
+        
+        boolean seInsertó = tabla_simbolos.insertarSimbolo(nombreFuncion, funcion);
+        
+        if (!seInsertó)
+        {
+            reportarErrorSemantico("Función "+nombreFuncion+" ya declarada "+
+                    "línea " + funcion.left + " columna " + funcion.right );
+        }  
+    }
+    
+    // MÉTODOS DE RECORDAR -----------------------------------------------------
     public void recordarID(int left, int right, Object token)
     {
         pila_semantica.push(new Variable_Simbolo(roles.VARIABLE,left, right,token));
@@ -85,6 +128,61 @@ parser code{:
     {
         pila_semantica.push(new Generico_Simbolo(roles.TIPO,left, right, tokenTipo));
     }
+    public void recordarID_Constante(int left, int right, Object token)
+    {
+        pila_semantica.push(new Variable_Simbolo(roles.CONSTANTE,left, right,token)); // el token es el id encontrado
+    }
+    public void recordarLiteral(int left, int right, Object tokenLiteral)
+    {
+        pila_semantica.push(new Generico_Simbolo(roles.LITERAL,left, right,tokenLiteral)); // el token es el id encontrado
+    }
+    public void recordarNombreFuncion(int left, int right, Object tokenNombre)
+    {
+        Funcion_Simbolo funcion = new Funcion_Simbolo(roles.FUNCION,left, right, null);
+        funcion.setNombre((String)tokenNombre);
+        pila_semantica.push(funcion);
+    }
+    public void recordarParametro(Object tokenTipo, int idLeft, int idRight, Object idToken)
+    {
+        Simbolo_Parametro para = new Simbolo_Parametro(roles.PARAMETRO, idLeft,idRight,null);
+        para.setNombre((String)idToken);
+        para.setTipo((String) tokenTipo);
+        pila_semantica.push(para);
+    }
+    public void verificarInvocacion()
+    {
+        Funcion_Simbolo func = (Funcion_Simbolo)this.pila_semantica.pop();
+        Funcion_Simbolo f =(Funcion_Simbolo) this.tabla_simbolos.buscar(func.getNombre());
+        
+        if (f != null)
+        {
+            if (f.getCant_Parametros() == this.pila_temp.size())
+            {
+                
+            }
+            else
+            {
+                this.reportarErrorSemantico("La función " + func.getNombre() + "(fila: " + func.left + " , columna: " + func.right + ") no recibe esata cantidad de parámetros");
+            }
+        }
+        else
+        {
+            this.reportarErrorSemantico("La función " + func.getNombre() + "(fila: " + func.left + " , columna: " + func.right + ") no está definida");
+        } 
+        this.pila_temp.clear();
+    }
+    // MÉTODOS DE RECORDAR - TEMPORALMENTE -------------------------------------
+    public void recordarConstanteLlamada(int left, int right, Object token)
+    {
+        this.pila_temp.push(new Generico_Simbolo(roles.LITERAL,left, right, token));
+    }
+    public void recordarParametroIDLlamada(int left, int right, Object token)
+    {
+        Generico_Simbolo s = new Generico_Simbolo(roles.PARAMETRO, left, right, null);
+        s.setNombre((String) token);
+        this.pila_temp.push(s);
+    }
+
 :}
 
 /* TERMINALES O TOKENS ********************************************************/
@@ -135,21 +233,53 @@ non terminal DECLARACION_VARIABLE, DCL_VAR_CONSECUTIVA, DECLARACION_CONSTANTE,
 non terminal DECLARACIONES_FUNC_PROC, FUNCION_O_PROCEDIMIENTO, DECLARACION_FUNCION,
              DECLARACION_PROCEDIMIENTO, ESTRUCTURA_FUNCION, PARAMETROS, PARAMETROS_Aux1,
              PARAMETROS_Aux2;
+non terminal PARAMETRO_INVOCACION, PARAMETRO_INVOCACION_CON, LISTA_PARAMETROS;
+
+         
+non terminal ESTRUCTURA_CONTROL, SENTENCIA_IF, SENTENCIA_REPEAT, 
+             SENTENCIA_CASE,CASE,CASES, CONSTANTE_CASE,LITERAL_CASE,
+             FUNCION_WRITE, FUNCION_READ, FUNCION_READ_AUX, PARAMETROS_WRITE, 
+             BLOQUE_IF, BLOQUE_ELSE, CONDICION,INICIO_FOR, 
+             BLOQUE_FOR,INICIO_WHILE, BLOQUE_WHILE;
+
+non terminal EXPRESION, EXPRESION_UNARIA, EXPRESION_COMPUESTA, EXPRESION_BINARIA,
+             EXPRESION_BASE,EXPRESION_CONDICION;
+
+non terminal OPERADOR_ARITMETICO, OPERADOR_ARITMETICO_ASIGN, OPERADOR_BOOLEAN,
+             OPERADOR_UNARIO ;
+
+non terminal CASES_err, FUNCION_READ_AUX_Err, FUNCION_WRITE_Err, PARAMETROS_WRITE_Aux, 
+             CONTENIDO_WRITE;
 
 // Tipo de datos y literales ---------------------------------------------------
 non terminal TIPO_DATO, TIPO_COMPUESTO, TIPO_SIMPLE, LITERAL ;
 
 
+// Sentencias ------------------------------------------------------------------
+non terminal CUERPO_INSTRUCCIONES, SENTENCIA, INSTRUCCION, ASIGNACION ;
+
+non terminal INVOCACION_FUNCION;
+
+
+
+
 precedence left error, _coma, _begin;
+precedence left _id;
+precedence left _op_suma, _op_resta , _op_multi , _op_division , _op_mod , _op_DIV;
+
+precedence left _dos_puntos, _punto_coma, _if, _repeat, _case, _write, _read ;
+
+precedence left _hilera , _caracter , _entero , _else, _for, _while;
+
 
 
 start with INICIO_PROGRAMA ;
 
 // -------------- Inicio de la gramática ---------------------------------------
 
-INICIO_PROGRAMA                     ::= _program _id BLOQUE_PROGRAMA {:System.out.println("Terminó");:} 
+INICIO_PROGRAMA                     ::= _program _id BLOQUE_PROGRAMA {:System.out.println("Terminó " + parser.tabla_simbolos);:} 
                                     ;
-BLOQUE_PROGRAMA                     ::= DECLARACIONES _begin _end
+BLOQUE_PROGRAMA                     ::= DECLARACIONES _begin CUERPO_INSTRUCCIONES _end
                                     ;
 DECLARACIONES                       ::= BLOQUE_DECLARACION_VARIABLES BLOQUE_DECLARACION_CONSTANTES DECLARACIONES_FUNC_PROC 
                                     ;
@@ -175,7 +305,7 @@ VARIABLE                            ::= _id : i
                                         :} 
                                         _punto_coma 
                                     ;
-DCL_VAR_CONSECUTIVA                 ::= _coma _id:i 
+DCL_VAR_CONSECUTIVA                 ::= _coma _id : i 
                                         {:
                                             parser.recordarID(ileft, iright, i);
                                         :}  
@@ -191,7 +321,15 @@ BLOQUE_DECLARACION_CONSTANTES       ::= _const DECLARACION_CONSTANTE
 DECLARACION_CONSTANTE               ::= CONSTANTE
                                     |   CONSTANTE DECLARACION_CONSTANTE
                                     ;
-CONSTANTE                           ::= _id _igual LITERAL _punto_coma
+CONSTANTE                           ::= _id:i 
+                                        {:
+                                            parser.recordarID_Constante(ileft, iright, i);
+                                        :} _igual LITERAL : l 
+                                        {:
+                                            parser.recordarLiteral(lleft, lright, l);
+                                            parser.guardarConst_TS();
+                                        :} 
+                                        _punto_coma
                                     |   error{:parser.errorMensaje("Error en la declaración de la constante");:} LITERAL _punto_coma
                                     ;
 
@@ -203,8 +341,22 @@ DECLARACIONES_FUNC_PROC             ::= FUNCION_O_PROCEDIMIENTO DECLARACIONES_FU
                                     ;
 FUNCION_O_PROCEDIMIENTO             ::= DECLARACION_FUNCION | DECLARACION_PROCEDIMIENTO
                                     ;
-DECLARACION_FUNCION                 ::= _function {:parser.estaProcesandoFuncsProcs=true;:} _id _parentesisAbre PARAMETROS _parentesisCierra _dos_puntos TIPO_DATO ESTRUCTURA_FUNCION
-                                    |   _function error {:parser.errorMensaje("Mala declaración de la función");:} ESTRUCTURA_FUNCION
+DECLARACION_FUNCION                 ::= _function 
+                                    {:
+                                        parser.estaProcesandoFuncsProcs = true;
+                                    :} 
+                                    _id:f 
+                                    {:
+                                        parser.recordarNombreFuncion(fleft, fright, f);
+                                    :} 
+                                    _parentesisAbre PARAMETROS _parentesisCierra _dos_puntos 
+                                    TIPO_DATO:t
+                                    {:
+                                        parser.recordarTipo(tleft, tright, t);
+                                        parser.guardarFuncion_TS(); 
+                                    :} 
+                                    ESTRUCTURA_FUNCION
+                                    |   _function error {:parser.errorMensaje("Mala declaración de la función"); parser.pila_semantica.clear();:} ESTRUCTURA_FUNCION
                                     ;
 ESTRUCTURA_FUNCION                  ::= BLOQUE_DECLARACION_VARIABLES _begin  _end 
                                     |   error {:System.out.println("Error");:} _begin _end
@@ -214,11 +366,124 @@ DECLARACION_PROCEDIMIENTO           ::= _procedure
 PARAMETROS                          ::= PARAMETROS_Aux1 
                                     |
                                     ;
-PARAMETROS_Aux1                     ::= TIPO_DATO _id PARAMETROS_Aux2
+PARAMETROS_Aux1                     ::= TIPO_DATO:tipoParametro _id:idParametro 
+                                    {:
+                                        parser.recordarParametro(tipoParametro, tipoParametroleft, tipoParametroright, idParametro);
+                                    :} 
+                                    PARAMETROS_Aux2
                                     ;
 PARAMETROS_Aux2                     ::= _coma PARAMETROS_Aux1 
                                     |
                                     ;
+
+// ------------ Cuerpo del programa --------------------------------------------
+
+CUERPO_INSTRUCCIONES                ::= SENTENCIA CUERPO_INSTRUCCIONES |  
+                                    ;
+SENTENCIA                           ::= ESTRUCTURA_CONTROL | INSTRUCCION _punto_coma 
+                                    ;
+INSTRUCCION                         ::= INVOCACION_FUNCION
+                                    |   ASIGNACION 
+                                    |   FUNCION_READ    
+                                    |   FUNCION_WRITE
+                                    ;
+ESTRUCTURA_CONTROL                  ::=  SENTENCIA_IF | SENTENCIA_REPEAT | SENTENCIA_CASE | INICIO_FOR | INICIO_WHILE
+                                    ;
+
+// ------------------Sentencia IF ----------------------------------------------
+SENTENCIA_IF                        ::= _if _parentesisAbre CONDICION _parentesisCierra _then BLOQUE_IF BLOQUE_ELSE
+                                    | _if  error:e {:parser.errorMensaje("Existe un error dentro del IF");:} _end;
+CONDICION                           ::= EXPRESION_CONDICION ;
+BLOQUE_IF                           ::= _begin BLOQUE_DECLARACION_VARIABLES CUERPO_INSTRUCCIONES _end ;
+BLOQUE_ELSE                         ::= _else _begin CUERPO_INSTRUCCIONES _end | ;
+
+// -------------------- Invocación de funciones --------------------------------
+
+/* Sentencias FOR ------------------------------------------------------------*/
+
+INICIO_FOR                        ::= _for _id _asignacion EXPRESION _to EXPRESION _do BLOQUE_FOR
+                                      |_for error:e {:parser.errorMensaje("Existe un error dentro del FOR");:} _end ;
+BLOQUE_FOR                        ::= _begin CUERPO_INSTRUCCIONES _end;
+
+/* Sentencias WHILE ----------------------------------------------------------*/
+
+INICIO_WHILE                      ::= _while _parentesisAbre EXPRESION_CONDICION _parentesisCierra _do BLOQUE_WHILE
+                                      |_while error:e {:parser.errorMensaje("Existe un error dentro del WHILE");:} _end;
+BLOQUE_WHILE                      ::= _begin CUERPO_INSTRUCCIONES _end;
+
+/* Sentencias REPEAT ---------------------------------------------------------*/
+
+SENTENCIA_REPEAT                  ::= _repeat CUERPO_INSTRUCCIONES _until _parentesisAbre EXPRESION_CONDICION _parentesisCierra;
+SENTENCIA_REPEAT                  ::= _repeat CUERPO_INSTRUCCIONES error:e {:parser.errorMensaje("Error en sentencia REPEAT, Falta Palabra Reservada UNTIL");:} _parentesisCierra ;
+SENTENCIA_REPEAT                  ::= _repeat CUERPO_INSTRUCCIONES _until error:e {:parser.errorMensaje("Error en sentencia REPEAT, Falta '(' en la Expresion Condicional");:} EXPRESION_CONDICION  _parentesisCierra;
+SENTENCIA_REPEAT                  ::= _repeat CUERPO_INSTRUCCIONES _until _parentesisAbre error:e {:parser.errorMensaje("Error en sentencia REPEAT, Expresion Condicional NO Valida");:} _parentesisCierra;
+
+/* Sentencias CASE -----------------------------------------------------------*/
+
+SENTENCIA_CASE                    ::= _case _id _of CASES  ;
+SENTENCIA_CASE                    ::= _case error:e {:parser.errorMensaje("Error en sentencia CASE, IDENTIFICADOR invalido");:} _of CASES  ;
+SENTENCIA_CASE                    ::= _case _id error:e {:parser.errorMensaje("Error en sentencia CASE, se espera la Palabra Reservada OF");:} CASES  ;
+CASES                             ::= CASE CUERPO_INSTRUCCIONES | CASE CUERPO_INSTRUCCIONES CASES ;
+CASES                             ::= error:e {:parser.errorMensaje("Error en opcion de sentencia CASE, CONSTANTE invalida");:} CUERPO_INSTRUCCIONES CASES_err;
+CASES_err                         ::= CASES |;
+CASE                              ::= CONSTANTE_CASE _dos_puntos | _else _dos_puntos;
+CONSTANTE_CASE                    ::= _hilera | _caracter | _entero;
+
+/* FUNCIONES READ Y WRITE ----------------------------------------------------*/
+
+FUNCION_READ           ::= _read FUNCION_READ_AUX;
+FUNCION_READ_AUX       ::= _parentesisAbre _parentesisCierra | _parentesisAbre _id _parentesisCierra;
+
+FUNCION_READ_AUX       ::= error:e {:parser.errorMensaje("Error en sentencia READ, falto abrir parentesis");:} FUNCION_READ_AUX_Err; 
+FUNCION_READ_AUX       ::= _parentesisAbre error:e {:parser.errorMensaje("Error en sentencia READ, Problemas con los parametros de la instruccion");:} FUNCION_READ_AUX_Err; 
+FUNCION_READ_AUX       ::= _parentesisAbre _id error:e {:parser.errorMensaje("Error en sentencia READ, falta cerrar patentesis");:};
+FUNCION_READ_AUX_Err   ::= _id _parentesisCierra | _parentesisCierra |;
+
+
+FUNCION_WRITE          ::= _write _parentesisAbre PARAMETROS_WRITE _parentesisCierra;
+FUNCION_WRITE          ::= _write error:e {:parser.errorMensaje("Error en sentencia WRITE, falto abrir parentesis");:} FUNCION_WRITE_Err;
+FUNCION_WRITE_Err      ::= PARAMETROS_WRITE _parentesisCierra | _parentesisCierra|;
+PARAMETROS_WRITE       ::= CONTENIDO_WRITE PARAMETROS_WRITE_Aux ;
+PARAMETROS_WRITE_Aux   ::= _coma PARAMETROS_WRITE | error:e {:parser.errorMensaje("Error en sentencia WRITE, falta ',' ");:} PARAMETROS_WRITE | ;
+CONTENIDO_WRITE        ::= EXPRESION | error:e {:parser.errorMensaje("Error en sentencia WRITE, parametro no valido");:};
+
+
+INVOCACION_FUNCION                  ::= _id : id {:parser.recordarNombreFuncion(idleft, idright, id);:} _parentesisAbre LISTA_PARAMETROS _parentesisCierra 
+                                        {:
+                                            this.parser.verificarInvocacion();
+
+                                        :}
+                                    ;
+LISTA_PARAMETROS                    ::= PARAMETRO_INVOCACION LISTA_PARAMETROS 
+                                    |   PARAMETRO_INVOCACION_CON;
+PARAMETRO_INVOCACION                ::= _id:i {:parser.recordarParametroIDLlamada(ileft,iright,i);:} 
+                                    |   LITERAL:l {:parser.recordarConstanteLlamada(lleft, lright, l);:} 
+                                    ;          
+PARAMETRO_INVOCACION_CON            ::= _coma PARAMETRO_INVOCACION PARAMETRO_INVOCACION_CON 
+                                    |
+                                    |   error{:parser.errorMensaje("Mala invocación de la función");:} PARAMETRO_INVOCACION_CON
+                                    ;   
+
+//------------------ Asignaciones ----------------------------------------------
+
+ASIGNACION                          ::= _id  OPERADOR_ARITMETICO_ASIGN EXPRESION 
+                                    |   error{:parser.errorMensaje("Error en la declaración ");:}
+                                    ;
+
+//------------------ Expresiones -----------------------------------------------      
+
+EXPRESION                         ::= EXPRESION_BASE | EXPRESION_BINARIA | EXPRESION_COMPUESTA | EXPRESION_UNARIA | INVOCACION_FUNCION ;
+EXPRESION_COMPUESTA               ::= _parentesisAbre EXPRESION _parentesisCierra ;
+EXPRESION_BINARIA                 ::= EXPRESION OPERADOR_ARITMETICO EXPRESION ;
+EXPRESION_UNARIA                  ::= _id OPERADOR_UNARIO ;
+EXPRESION_BASE                    ::= _id | LITERAL ;
+EXPRESION_CONDICION               ::=  EXPRESION OPERADOR_BOOLEAN EXPRESION | EXPRESION error EXPRESION ;
+
+
+OPERADOR_ARITMETICO               ::= _op_suma | _op_resta | _op_multi | _op_division | _op_mod | _op_DIV  ;
+OPERADOR_ARITMETICO_ASIGN         ::= _op_mas_igual | _op_menos_igual | _op_div_igual | _op_mult_igual | _asignacion  ;
+OPERADOR_BOOLEAN                  ::= _menor_igual | _menor | _igual | _mayor_igual | _mayor | _distinto | _OR | _AND | _NOT ;
+OPERADOR_UNARIO                   ::= _op_inc | _op_dec ; 
 
 //------------------- Tipo de datos y literales --------------------------------
 
@@ -228,17 +493,17 @@ TIPO_DATO                           ::= TIPO_COMPUESTO
 TIPO_COMPUESTO                      ::= _array _bra_aper _entero _rango_dos_puntos _entero _bra_cerr _of TIPO_DATO 
                                     |   _array _bra_aper _entero _bra_cerr _of TIPO_DATO
                                     ;
-TIPO_SIMPLE                         ::=  _string:t  {:RESULT = t;:} 
-                                    |   _int:t      {:RESULT =t ;:}  
+TIPO_SIMPLE                         ::= _string:t   {:RESULT = t;:} 
+                                    |   _int:t      {:RESULT = t;:}  
                                     |   _boolean:t  {:RESULT = t;:} 
                                     |   _char:t     {:RESULT = t;:} 
                                     |   _longint:t  {:RESULT = t;:} 
                                     |   _shortint:t {:RESULT = t;:} 
                                     |   _real:t     {:RESULT = t;:} 
                                     ;
-LITERAL                             ::= _entero 
-                                    |   _hilera 
-                                    |   _true 
-                                    |   _false 
-                                    |   _flotante 
-                                    |   _caracter ;
+LITERAL                             ::= _entero:e   {:RESULT = Integer.parseInt((String)e);:}
+                                    |   _hilera:h   {:RESULT = h;:}  
+                                    |   _true:t     {:RESULT =  Boolean.parseBoolean((String)t);:} 
+                                    |   _false:f    {:RESULT = Boolean.parseBoolean((String)f);:} 
+                                    |   _flotante:fl{:RESULT = Float.parseFloat((String)fl);:} 
+                                    |   _caracter:c {:RESULT = c;:} ;

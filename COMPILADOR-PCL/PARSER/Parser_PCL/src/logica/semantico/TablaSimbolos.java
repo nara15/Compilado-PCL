@@ -3,6 +3,8 @@ package logica.semantico;
 
 import logica.semantico.registros.Simbolo;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  *
@@ -29,4 +31,26 @@ public class TablaSimbolos
             return false;
         }
     }
+    
+    public Simbolo buscar(String nombre)
+    {
+        return this._tablaSimbolos.get(nombre);
+    }
+    
+    @Override
+    public String toString() 
+    {
+        String res = "";
+        
+        Set<Entry<String,Simbolo>> entries = this._tablaSimbolos.entrySet();
+        
+        for (Entry e : entries)
+        {
+            res += e.getValue().toString() + "\n";
+        }
+        
+        return res;
+    }
+    
+    
 }
